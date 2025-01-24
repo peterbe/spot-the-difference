@@ -1,8 +1,8 @@
-export type Challenge = {
+export type SnippetChallenge = {
   characterAt: number;
   replacement: string;
 };
-export function getChallenge(snippetArr: string[]): Challenge {
+export function getSnippetChallenge(snippetArr: string[]): SnippetChallenge {
   let c = 0;
   while (c < 1000) {
     c++;

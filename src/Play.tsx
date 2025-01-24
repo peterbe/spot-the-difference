@@ -1,11 +1,11 @@
 import { useEffect, useRef, useState } from "react";
 import classes from "./play.module.css";
-import { useChallenge } from "./use-challenge";
-// import { Timer } from "./Timer";
+import { type Challenge, useChallenge } from "./use-challenge";
 import JSConfetti from "js-confetti";
 import { useInterval, useDocumentTitle, useLocalStorage } from "usehooks-ts";
 import { ProgressTimer } from "./ProgressTimer";
 import { WithShimmerEffect } from "./WithSimmerEffect";
+import { useSearchParams } from "react-router";
 
 export function Play() {
   const confetti = useRef(new JSConfetti());
@@ -169,7 +169,7 @@ export function Play() {
         </article>
       )}
 
-      <p>
+      {/* <p>
         Seconds: <code>{seconds}</code>
         <br />
         Paused: <code>{JSON.stringify(paused)}</code>
@@ -178,9 +178,8 @@ export function Play() {
         <br />
         Stopped: <code>{JSON.stringify(stopped)}</code>
         <br />
-      </p>
+      </p> */}
       <ProgressTimer seconds={seconds} maxSeconds={maxSeconds} />
-      {/* <Timer started={started} stopped={stopped} paused={paused} /> */}
 
       <div role="group">
         <button
@@ -218,10 +217,26 @@ export function Play() {
           Sounds on
         </label>
       </fieldset>
-      <hr />
-      <pre>{JSON.stringify(challenge.challenge, undefined, 2)}</pre>
+
+      <CheatMaybe challenge={challenge} />
     </article>
   );
+}
+
+function CheatMaybe({ challenge }: { challenge: Challenge }) {
+  const [searchParams] = useSearchParams();
+  const cheat = Boolean(JSON.parse(searchParams.get("cheat") || "false"));
+
+  if (cheat) {
+    return (
+      <div style={{ marginTop: 30 }}>
+        <hr />
+        <pre>{JSON.stringify(challenge.challenge, undefined, 2)}</pre>;
+      </div>
+    );
+  }
+
+  return null;
 }
 
 function RandomHappyEmoji() {
