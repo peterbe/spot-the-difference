@@ -1,10 +1,18 @@
+export type Snippet = {
+  category: string;
+  text: string;
+};
+
 const CATEGORIES = {
   JSX: "JSX",
   CSS: "CSS",
   JSON: "JSON",
   MAKE: "Make",
 };
-export const SNIPPETS = {
+
+export const SNIPPETS: {
+  [id: string]: Snippet;
+} = {
   // --------------------------------------------------------------------------
   untitled1: {
     category: CATEGORIES.JSX,
