@@ -61,7 +61,7 @@ export function Play() {
 
   function clicked(event: React.MouseEvent<HTMLSpanElement>, nth: number) {
     event.preventDefault();
-    if (stopped || paused) {
+    if (stopped || paused || hardPaused) {
       return;
     }
     setGuess(nth);
