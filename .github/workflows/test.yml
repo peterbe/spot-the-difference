@@ -13,3 +13,10 @@ jobs:
       - uses: oven-sh/setup-bun@v2
       - run: bun run lint
       - run: bun run build
+      - name: Serve app
+        env:
+          PORT: 3000
+        run: |
+          bun run preview &
+          sleep 1
+          curl --fail --retry-connrefused --retry 3 http://localhost:3000
