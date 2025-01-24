@@ -7,12 +7,13 @@ import { ProgressTimer } from "./ProgressTimer";
 import { WithShimmerEffect } from "./WithSimmerEffect";
 import { useSearchParams } from "react-router";
 
+const coinAudio = new Audio("/coin.mp3");
+// const applauseAudio = useRef(new Audio("/applause.mp3")); // TODO USE WHEN FINISHED SNIPPETS
+const clickAudio = new Audio("/click.mp3");
+
 export function Play() {
   const confetti = useRef(new JSConfetti());
   const [audioOn, setAudioOn] = useLocalStorage("audio-on", true);
-  const coinAudio = useRef(new Audio("/coin.mp3"));
-  // const applauseAudio = useRef(new Audio("/applause.mp3")); // TODO USE WHEN FINISHED SNIPPETS
-  const clickAudio = useRef(new Audio("/click.mp3"));
 
   const { challenge, setNewChallenge } = useChallenge();
 
@@ -71,12 +72,12 @@ export function Play() {
       setStopped(true);
       confetti.current.addConfetti();
       if (audioOn) {
-        coinAudio.current.play();
+        coinAudio.play();
         // applauseAudio.current.play();
       }
     } else {
       if (audioOn) {
-        clickAudio.current.play();
+        clickAudio.play();
       }
     }
   }
@@ -139,6 +140,10 @@ export function Play() {
               <td className={paused || hardPaused ? classes.paused : undefined}>
                 <pre className={classes.snippets}>{differenceX}</pre>
               </td>
+            </tr>
+            <tr>
+              <td></td>
+              <td>click the character that is different ⤴︎ </td>
             </tr>
           </tbody>
         </table>
