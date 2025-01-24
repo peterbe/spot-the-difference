@@ -18,3 +18,7 @@ format: lint
 
 install:
     bun install
+
+outdated:
+    bun outdated
+    bunx npm-check-updates --interactive
