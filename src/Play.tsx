@@ -1,9 +1,11 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import classes from "./play.module.css";
 import { useChallenge } from "./use-challenge";
 import { Timer } from "./Timer";
+import JSConfetti from "js-confetti";
 
 export function Play() {
+  const confetti = useRef(new JSConfetti());
   const { challenge, setNewChallenge } = useChallenge();
 
   const [guess, setGuess] = useState<number | null>(null);
@@ -25,6 +27,7 @@ export function Play() {
     if (nth === challenge.challenge.characterAt) {
       setGotIt(true);
       setStopped(new Date());
+      confetti.current.addConfetti();
     }
   }
 
@@ -34,6 +37,7 @@ export function Play() {
     setGotIt(null);
     setStopped(null);
     setNewChallenge();
+    confetti.current.clearCanvas();
   }
 
   const snippetX = challenge.snippetArr.map((character, i) => {
