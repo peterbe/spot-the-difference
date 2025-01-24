@@ -5,6 +5,7 @@ import { useChallenge } from "./use-challenge";
 import JSConfetti from "js-confetti";
 import { useInterval, useDocumentTitle, useLocalStorage } from "usehooks-ts";
 import { ProgressTimer } from "./ProgressTimer";
+import { WithShimmerEffect } from "./WithSimmerEffect";
 
 export function Play() {
   const confetti = useRef(new JSConfetti());
@@ -152,10 +153,12 @@ export function Play() {
         Guesses: <b>{guessCount}</b>
       </p>
       {stopped && (
-        <hgroup>
-          <h3>Stopped</h3>
-          <p>Click "Next!"</p>
-        </hgroup>
+        <WithShimmerEffect>
+          <hgroup>
+            <h3>Stopped</h3>
+            <p>Click "Next!"</p>
+          </hgroup>
+        </WithShimmerEffect>
       )}
       {(gotIt !== null || stopped) && (
         <article>
