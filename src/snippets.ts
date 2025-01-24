@@ -8,6 +8,10 @@ const CATEGORIES = {
   CSS: "CSS",
   JSON: "JSON",
   MAKE: "Make",
+  RUST: "Rust",
+  BRAINFUN: "Brainfun",
+  C: "C",
+  HTML: "HTML",
 };
 
 export const SNIPPETS: {
@@ -84,4 +88,61 @@ start: build
     `.trim(),
   },
   // --------------------------------------------------------------------------
+  reactRouterRoute: {
+    category: CATEGORIES.JSX,
+    text: `
+<Route path="/concerts/:city" element={<City />} />
+    `.trim(),
+  },
+  // --------------------------------------------------------------------------
+  rustHelloWord: {
+    category: CATEGORIES.RUST,
+    text: `
+// Hello world in Rust
+
+fn main() {
+    println!("Hello World!");
+}
+    `.trim(),
+  },
+  // --------------------------------------------------------------------------
+  brainfunHelloWord: {
+    category: CATEGORIES.BRAINFUN,
+    text: `
+++++++++++[>+++++++>++++++++++>+++<<<-]>++.>+.+++++++
+..+++.>++.<<+++++++++++++++.>.+++.------.--------.>+.
+    `.trim(),
+  },
+  // --------------------------------------------------------------------------
+  cHelloWord: {
+    category: CATEGORIES.C,
+    text: `
+/* Hello World in C, Ansi-style */
+
+#include <stdio.h>
+#include <stdlib.h>
+
+int main(void)
+{
+  puts("Hello World!");
+  return EXIT_SUCCESS;
+}
+     `.trim(),
+  },
+  // --------------------------------------------------------------------------
+  htmlHelloWord: {
+    category: CATEGORIES.HTML,
+    text: `
+<!doctype html>
+<html>
+<!-- Hello World in HTML -->
+<head>
+<title>Hello World!</title>
+</head>
+<body>
+Hello World!
+</body>
+</html>
+     `.trim(),
+  },
 };
