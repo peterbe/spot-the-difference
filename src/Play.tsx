@@ -1,33 +1,82 @@
 import { useEffect, useRef, useState } from "react";
 import classes from "./play.module.css";
 import { useChallenge } from "./use-challenge";
-import { Timer } from "./Timer";
+// import { Timer } from "./Timer";
 import JSConfetti from "js-confetti";
+import { useInterval } from "usehooks-ts";
+import { ProgressTimer } from "./ProgressTimer";
 
 export function Play() {
   const confetti = useRef(new JSConfetti());
+  const [audioOn, setAudioOn] = useState(true);
+  const coinAudio = useRef(new Audio("/coin.mp3"));
+  const applauseAudio = useRef(new Audio("/applause.mp3"));
+  const clickAudio = useRef(new Audio("/click.mp3"));
+
   const { challenge, setNewChallenge } = useChallenge();
 
   const [guess, setGuess] = useState<number | null>(null);
   const [guessCount, setGuessCount] = useState(0);
   const [gotIt, setGotIt] = useState<boolean | null>(null);
-  const [started, setStarted] = useState(new Date());
-  const [stopped, setStopped] = useState<Date | null>(null);
+
+  const [maxSeconds] = useState(60);
+  const [seconds, setSeconds] = useState<number>(0);
+  const [paused, setPaused] = useState(false);
+  const [hardPaused, setHardPaused] = useState(false);
+  const [stopped, setStopped] = useState(false);
+
+  useInterval(
+    () => {
+      // Your custom logic here
+      setSeconds((p) => p + 1);
+    },
+    // Delay in milliseconds or null to stop it
+    !(paused || hardPaused || stopped) ? 1000 : null
+  );
+
   useEffect(() => {
-    setStarted(new Date());
+    setSeconds(0);
   }, [challenge]);
+
+  useEffect(() => {
+    if (seconds >= maxSeconds) {
+      setStopped(true);
+    }
+  }, [seconds, maxSeconds]);
+
+  useEffect(() => {
+    function listener() {
+      if (document.hidden) {
+        setPaused(true);
+      } else {
+        setPaused(false);
+      }
+    }
+    document.addEventListener("visibilitychange", listener);
+    return () => {
+      document.removeEventListener("visibilitychange", listener);
+    };
+  }, [setPaused]);
 
   function clicked(event: React.MouseEvent<HTMLSpanElement>, nth: number) {
     event.preventDefault();
-    if (stopped) {
+    if (stopped || paused) {
       return;
     }
     setGuess(nth);
     setGuessCount((prev) => prev + 1);
     if (nth === challenge.challenge.characterAt) {
       setGotIt(true);
-      setStopped(new Date());
+      setStopped(true);
       confetti.current.addConfetti();
+      if (audioOn) {
+        coinAudio.current.play();
+        // applauseAudio.current.play();
+      }
+    } else {
+      if (audioOn) {
+        clickAudio.current.play();
+      }
     }
   }
 
@@ -35,11 +84,12 @@ export function Play() {
     setGuess(null);
     setGuessCount(0);
     setGotIt(null);
-    setStopped(null);
     setNewChallenge();
+    setStopped(false);
     confetti.current.clearCanvas();
   }
 
+  // XXX refactor out to own component and memoized
   const snippetX = challenge.snippetArr.map((character, i) => {
     return (
       <span key={`${character}${i}`} onClick={(event) => clicked(event, i)}>
@@ -47,7 +97,6 @@ export function Play() {
       </span>
     );
   });
-
   const differenceX = challenge.differenceArr.map((character, i) => {
     const bother = !(character === "\n" || character === " ");
     return (
@@ -61,7 +110,7 @@ export function Play() {
   });
 
   return (
-    <div>
+    <article>
       {challenge && (
         <table>
           <thead>
@@ -72,10 +121,10 @@ export function Play() {
           </thead>
           <tbody>
             <tr>
-              <td>
+              <td className={paused || hardPaused ? classes.paused : undefined}>
                 <pre className={classes.snippets}>{snippetX}</pre>
               </td>
-              <td>
+              <td className={paused || hardPaused ? classes.paused : undefined}>
                 <pre className={classes.snippets}>{differenceX}</pre>
               </td>
             </tr>
@@ -90,29 +139,59 @@ export function Play() {
       <p>
         Guesses: <b>{guessCount}</b>
       </p>
-      {gotIt !== null && (
+      {stopped && (
+        <hgroup>
+          <h3>Stopped</h3>
+          <p>Click "Next!"</p>
+        </hgroup>
+      )}
+      {(gotIt !== null || stopped) && (
         <article>
           <header>
             {gotIt && <RandomHappyEmoji />}
-            {gotIt ? "You did it!" : "Wrong"}
+            {gotIt ? "You did it!" : stopped ? "Time ran out" : "Wrong"}
             {!gotIt && <RandomSadEmoji />}
           </header>
         </article>
       )}
 
-      <Timer started={started} stopped={stopped} />
+      <p>
+        Seconds: <code>{seconds}</code>
+        <br />
+        Paused: <code>{JSON.stringify(paused)}</code>
+        <br />
+        Hardpaused: <code>{JSON.stringify(hardPaused)}</code>
+        <br />
+        Stopped: <code>{JSON.stringify(stopped)}</code>
+        <br />
+      </p>
+      <ProgressTimer seconds={seconds} maxSeconds={maxSeconds} />
+      {/* <Timer started={started} stopped={stopped} paused={paused} /> */}
 
-      <button
-        type="button"
-        onClick={() => {
-          reset();
-        }}
-      >
-        Next!
-      </button>
+      <div role="group">
+        <button
+          disabled={!!stopped}
+          type="button"
+          onClick={() => {
+            setHardPaused((was) => !was);
+          }}
+        >
+          {hardPaused ? "Unpause" : "Pause"}
+        </button>
+
+        <button
+          type="button"
+          disabled={!!paused}
+          onClick={() => {
+            reset();
+          }}
+        >
+          Next!
+        </button>
+      </div>
       <hr />
       <pre>{JSON.stringify(challenge.challenge, undefined, 2)}</pre>
-    </div>
+    </article>
   );
 }
 

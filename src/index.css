@@ -60,6 +60,11 @@ thead th {
   text-align: center;
 }
 
+/* .progress::-webkit-progress-value {
+  transition: width 0.5s ease;
+} */
+
+
 /* :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;

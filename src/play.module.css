@@ -5,3 +5,7 @@
 .snippets span {
   cursor: pointer;
 }
+
+.paused {
+  filter: blur(5px);
+}
