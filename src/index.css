@@ -1,0 +1,130 @@
+@import "@picocss/pico";
+
+:root {
+  --pico-border-radius: 2rem;
+  --pico-typography-spacing-vertical: 1.5rem;
+  --pico-form-element-spacing-vertical: 1rem;
+  --pico-form-element-spacing-horizontal: 1.25rem;
+}
+h1 {
+  /* --pico-font-family: Pacifico, cursive; */
+  --pico-font-weight: 800;
+  --pico-typography-spacing-vertical: 0.5rem;
+}
+button {
+  --pico-font-weight: 700;
+}
+
+/* Orange color for light color scheme (Default) */
+/* Can be forced with data-theme="light" */
+[data-theme="light"],
+:root:not([data-theme="dark"]) {
+  --pico-text-selection-color: rgba(244, 93, 44, 0.25);
+  --pico-primary: #bd3c13;
+  --pico-primary-background: #d24317;
+  --pico-primary-underline: rgba(189, 60, 19, 0.5);
+  --pico-primary-hover: #942d0d;
+  --pico-primary-hover-background: #bd3c13;
+  --pico-primary-focus: rgba(244, 93, 44, 0.5);
+  --pico-primary-inverse: #fff;
+}
+
+/* Orange color for dark color scheme (Auto) */
+/* Automatically enabled if user has Dark mode enabled */
+@media only screen and (prefers-color-scheme: dark) {
+  :root:not([data-theme]) {
+    --pico-text-selection-color: rgba(245, 107, 61, 0.1875);
+    --pico-primary: #f56b3d;
+    --pico-primary-background: #d24317;
+    --pico-primary-underline: rgba(245, 107, 61, 0.5);
+    --pico-primary-hover: #f8a283;
+    --pico-primary-hover-background: #e74b1a;
+    --pico-primary-focus: rgba(245, 107, 61, 0.375);
+    --pico-primary-inverse: #fff;
+  }
+}
+/* Orange color for dark color scheme (Forced) */
+/* Enabled if forced with data-theme="dark" */
+[data-theme="dark"] {
+  --pico-text-selection-color: rgba(245, 107, 61, 0.1875);
+  --pico-primary: #f56b3d;
+  --pico-primary-background: #d24317;
+  --pico-primary-underline: rgba(245, 107, 61, 0.5);
+  --pico-primary-hover: #f8a283;
+  --pico-primary-hover-background: #e74b1a;
+  --pico-primary-focus: rgba(245, 107, 61, 0.375);
+  --pico-primary-inverse: #fff;
+}
+
+thead th {
+  text-align: center;
+}
+
+/* :root {
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  color-scheme: light dark;
+  color: rgba(255, 255, 255, 0.87);
+  background-color: #242424;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+a {
+  font-weight: 500;
+  color: #646cff;
+  text-decoration: inherit;
+}
+a:hover {
+  color: #535bf2;
+}
+
+body {
+  margin: 0;
+  display: flex;
+  place-items: center;
+  min-width: 320px;
+  min-height: 100vh;
+}
+
+h1 {
+  font-size: 3.2em;
+  line-height: 1.1;
+}
+
+button {
+  border-radius: 8px;
+  border: 1px solid transparent;
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
+  background-color: #1a1a1a;
+  cursor: pointer;
+  transition: border-color 0.25s;
+}
+button:hover {
+  border-color: #646cff;
+}
+button:focus,
+button:focus-visible {
+  outline: 4px auto -webkit-focus-ring-color;
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    color: #213547;
+    background-color: #ffffff;
+  }
+  a:hover {
+    color: #747bff;
+  }
+  button {
+    background-color: #f9f9f9;
+  }
+} */

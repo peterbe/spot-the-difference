@@ -1,0 +1,7 @@
+.snippets {
+  padding: 30px;
+}
+
+.snippets span {
+  cursor: pointer;
+}
