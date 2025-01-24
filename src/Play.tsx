@@ -9,10 +9,9 @@ import { WithShimmerEffect } from "./WithSimmerEffect";
 
 export function Play() {
   const confetti = useRef(new JSConfetti());
-  // const [audioOn, setAudioOn] = useState(true);
   const [audioOn, setAudioOn] = useLocalStorage("audio-on", true);
   const coinAudio = useRef(new Audio("/coin.mp3"));
-  const applauseAudio = useRef(new Audio("/applause.mp3"));
+  // const applauseAudio = useRef(new Audio("/applause.mp3")); // TODO USE WHEN FINISHED SNIPPETS
   const clickAudio = useRef(new Audio("/click.mp3"));
 
   const { challenge, setNewChallenge } = useChallenge();
@@ -212,7 +211,7 @@ export function Play() {
             type="checkbox"
             role="switch"
             checked={audioOn}
-            onChange={(event) => {
+            onChange={() => {
               setAudioOn((was) => !was);
             }}
           />{" "}
