@@ -2,13 +2,13 @@
 # https://just.systems/
 
 dev:
-    bun run dev -- --port 3000
+    bun run dev
 
 build:
     bun run build
 
 start: build
-    bun run preview -- --port 3000
+    bun run preview
 
 lint:
     bun run lint
