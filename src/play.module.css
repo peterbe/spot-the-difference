@@ -9,3 +9,8 @@
 .paused {
   filter: blur(5px);
 }
+
+
+.settings {
+  margin-top: 100px;
+}

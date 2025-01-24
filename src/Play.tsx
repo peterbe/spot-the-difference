@@ -3,12 +3,13 @@ import classes from "./play.module.css";
 import { useChallenge } from "./use-challenge";
 // import { Timer } from "./Timer";
 import JSConfetti from "js-confetti";
-import { useInterval } from "usehooks-ts";
+import { useInterval, useDocumentTitle, useLocalStorage } from "usehooks-ts";
 import { ProgressTimer } from "./ProgressTimer";
 
 export function Play() {
   const confetti = useRef(new JSConfetti());
-  const [audioOn, setAudioOn] = useState(true);
+  // const [audioOn, setAudioOn] = useState(true);
+  const [audioOn, setAudioOn] = useLocalStorage("audio-on", true);
   const coinAudio = useRef(new Audio("/coin.mp3"));
   const applauseAudio = useRef(new Audio("/applause.mp3"));
   const clickAudio = useRef(new Audio("/click.mp3"));
@@ -88,6 +89,17 @@ export function Play() {
     setStopped(false);
     confetti.current.clearCanvas();
   }
+
+  const name = "Spot the Difference";
+  let documentTitle = `Playing | ${name}`;
+  if (gotIt) {
+    documentTitle = `Congratulations! | ${name}`;
+  } else if (paused || hardPaused) {
+    documentTitle = `Paused | ${name}`;
+  } else if (stopped) {
+    documentTitle = `Stopped | ${name}`;
+  }
+  useDocumentTitle(documentTitle);
 
   // XXX refactor out to own component and memoized
   const snippetX = challenge.snippetArr.map((character, i) => {
@@ -189,6 +201,21 @@ export function Play() {
           Next!
         </button>
       </div>
+
+      <fieldset className={classes.settings}>
+        <label>
+          <input
+            name="audio"
+            type="checkbox"
+            role="switch"
+            checked={audioOn}
+            onChange={(event) => {
+              setAudioOn((was) => !was);
+            }}
+          />{" "}
+          Sounds on
+        </label>
+      </fieldset>
       <hr />
       <pre>{JSON.stringify(challenge.challenge, undefined, 2)}</pre>
     </article>
