@@ -19,9 +19,7 @@ jobs:
       - run: bun run lint
       - run: bun run build
       - name: Serve app
-        env:
-          PORT: 3000
         run: |
-          bun run preview &
+          bun run preview -- --port 3000 &
           sleep 1
           curl --fail --retry-connrefused --retry 3 http://localhost:3000
