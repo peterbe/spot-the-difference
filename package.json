@@ -14,7 +14,6 @@
   "dependencies": {
     "@picocss/pico": "^2.0.6",
     "clsx": "^2.1.1",
-    "firebase-tools": "^13.29.2",
     "husky": "^9.1.7",
     "js-confetti": "^0.12.0",
     "react": "^18.3.1",
