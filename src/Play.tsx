@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import classes from "./play.module.css";
 import { type Challenge, useChallenge } from "./use-challenge";
 import JSConfetti from "js-confetti";
-import { useInterval, useDocumentTitle, useLocalStorage } from "usehooks-ts";
+import { useDocumentTitle, useInterval, useLocalStorage } from "usehooks-ts";
 import { ProgressTimer } from "./ProgressTimer";
 import { WithShimmerEffect } from "./WithSimmerEffect";
 import { useSearchParams } from "react-router";

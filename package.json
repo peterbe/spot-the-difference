@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "bunx --bun vite",
     "build": "tsc -b && bunx --bun vite build",
-    "lint": "eslint .",
+    "lint": "eslint --fix .",
+    "lint:check": "eslint .",
     "preview": "bunx --bun vite preview",
     "prepare": "husky"
   },

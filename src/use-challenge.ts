@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { type Snippet, SNIPPETS } from "./snippets";
+import { SNIPPETS, type Snippet } from "./snippets";
 import { type SnippetChallenge, getSnippetChallenge } from "./challenge";
 
 type SnippetId = keyof typeof SNIPPETS;
