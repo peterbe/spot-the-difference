@@ -1,8 +1,8 @@
 import { BrowserRouter, Route, Routes } from "react-router";
-import { App } from "./App";
-import { Play } from "./Play";
-import { Layout } from "./Layout";
 import { About } from "./About";
+import { App } from "./App";
+import { Layout } from "./Layout";
+import { Play } from "./Play";
 
 export function AppRoutes() {
   return (
