@@ -10,7 +10,22 @@
   filter: blur(5px);
 }
 
-
 .settings {
   margin-top: 100px;
+}
+
+
+.hintOverlay {
+  position: absolute;
+  border-radius: 50%;
+  background-color: rgba(0, 0, 0, 0.07);
+  pointer-events: none;
+}
+
+@media only screen and (prefers-color-scheme: dark) {
+  :root:not([data-theme]) {
+    .hintOverlay {
+      background-color: rgba(255, 255, 255, 0.07);
+    }
+  }
 }
