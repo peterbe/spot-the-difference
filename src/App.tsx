@@ -11,6 +11,7 @@ export function App() {
 
       <div>
         <button
+          type="button"
           onClick={() => {
             navigate("/play");
           }}
