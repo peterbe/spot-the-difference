@@ -6,7 +6,7 @@ export function App() {
   return (
     <div className={classes.hero}>
       <div>
-        <img src="/goose-500.png" alt="Goose" />
+        <img src="/goose-500.webp" alt="Goose" />
       </div>
 
       <div>
