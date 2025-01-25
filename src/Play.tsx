@@ -11,6 +11,8 @@ const coinAudio = new Audio("/coin.mp3");
 // const applauseAudio = useRef(new Audio("/applause.mp3")); // TODO USE WHEN FINISHED SNIPPETS
 const clickAudio = new Audio("/click.mp3");
 
+const INITIAL_HINT_RADIUS = 200;
+
 export function Play() {
   const confetti = useRef(new JSConfetti());
   const [audioOn, setAudioOn] = useLocalStorage("audio-on", true);
@@ -26,6 +28,9 @@ export function Play() {
   const [paused, setPaused] = useState(false);
   const [hardPaused, setHardPaused] = useState(false);
   const [stopped, setStopped] = useState(false);
+
+  const [hintRadius, setHintRadius] = useState(0);
+  const [countHints, setCountHints] = useState(0);
 
   useInterval(
     () => {
@@ -80,6 +85,7 @@ export function Play() {
         clickAudio.play();
       }
     }
+    setHintRadius(0);
   }
 
   function reset() {
@@ -89,6 +95,8 @@ export function Play() {
     setNewChallenge();
     setStopped(false);
     confetti.current.clearCanvas();
+    setHintRadius(0);
+    setCountHints(0);
   }
 
   const name = "Spot the Difference";
@@ -110,17 +118,44 @@ export function Play() {
       </span>
     );
   });
+  const correctRef = useRef<HTMLSpanElement>(null);
   const differenceX = challenge.differenceArr.map((character, i) => {
     const bother = !(character === "\n" || character === " ");
     return (
       <span
         key={`${character}${i}`}
+        ref={i === challenge.challenge.characterAt ? correctRef : undefined}
         onClick={(event) => bother && clicked(event, i)}
       >
         {character}
       </span>
     );
   });
+
+  const hintOverlayRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (hintRadius > 0 && correctRef.current && hintOverlayRef.current) {
+      const rect = correctRef.current.getBoundingClientRect();
+
+      const radisRatio = hintRadius / INITIAL_HINT_RADIUS;
+      const jitter = Math.random() * 20 * radisRatio;
+      const radius = hintRadius;
+
+      hintOverlayRef.current.style.width = `${radius}px`;
+      hintOverlayRef.current.style.height = `${radius}px`;
+
+      const offsetLeft = Math.random() > 0.5 ? jitter : -jitter;
+      const offsetTop = Math.random() > 0.5 ? jitter : -jitter;
+
+      hintOverlayRef.current.style.left = `${
+        offsetLeft + rect.left + rect.width / 2 - radius / 2
+      }px`;
+      hintOverlayRef.current.style.top = `${
+        offsetTop + rect.top + rect.height / 2 - radius / 2
+      }px`;
+    }
+  }, [hintRadius]);
 
   return (
     <article>
@@ -148,6 +183,14 @@ export function Play() {
           </tbody>
         </table>
       )}
+      {hintRadius > 0 && (
+        <div
+          // className="hint-overlay"
+          className={classes.hintOverlay}
+          ref={hintOverlayRef}
+          style={{ opacity: hintRadius / 100 }}
+        />
+      )}
       {guess && (
         <p>
           You clicked on <b>{challenge.snippetArr[guess]}</b>
@@ -156,6 +199,7 @@ export function Play() {
       <p>
         Guesses: <b>{guessCount}</b>
       </p>
+      {countHints > 0 && <p>Hint engaged!</p>}
       {stopped && (
         <WithShimmerEffect>
           <hgroup>
@@ -174,39 +218,48 @@ export function Play() {
         </article>
       )}
 
-      {/* <p>
-        Seconds: <code>{seconds}</code>
-        <br />
-        Paused: <code>{JSON.stringify(paused)}</code>
-        <br />
-        Hardpaused: <code>{JSON.stringify(hardPaused)}</code>
-        <br />
-        Stopped: <code>{JSON.stringify(stopped)}</code>
-        <br />
-      </p> */}
       <ProgressTimer seconds={seconds} maxSeconds={maxSeconds} />
 
-      <div role="group">
-        <button
-          disabled={!!stopped}
-          type="button"
-          onClick={() => {
-            setHardPaused((was) => !was);
-          }}
-        >
-          {hardPaused ? "Unpause" : "Pause"}
-        </button>
+      {challenge && (
+        <div role="group">
+          <button
+            disabled={!!stopped}
+            type="button"
+            onClick={() => {
+              setHardPaused((was) => !was);
+            }}
+          >
+            {hardPaused ? "Unpause" : "Pause"}
+          </button>
 
-        <button
-          type="button"
-          disabled={!!paused}
-          onClick={() => {
-            reset();
-          }}
-        >
-          Next!
-        </button>
-      </div>
+          <button
+            disabled={!!stopped || paused || hardPaused}
+            type="button"
+            onClick={() => {
+              if (correctRef.current) {
+                if (hintRadius === 0) {
+                  setHintRadius(INITIAL_HINT_RADIUS);
+                } else {
+                  setHintRadius((prev) => Math.max(10, prev - 10));
+                }
+                setCountHints((prev) => prev + 1);
+              }
+            }}
+          >
+            Hint
+          </button>
+
+          <button
+            type="button"
+            disabled={!!paused}
+            onClick={() => {
+              reset();
+            }}
+          >
+            Next!
+          </button>
+        </div>
+      )}
 
       <fieldset className={classes.settings}>
         <label>
