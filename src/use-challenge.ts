@@ -28,7 +28,9 @@ function getRandomSnippetAndChallenge(): Challenge {
 }
 
 export function useChallenge() {
-  const [challenge, setChallenge] = useState(getRandomSnippetAndChallenge());
+  const [challenge, setChallenge] = useState(() =>
+    getRandomSnippetAndChallenge()
+  );
 
   function setNewChallenge() {
     let newChallenge = getRandomSnippetAndChallenge();
