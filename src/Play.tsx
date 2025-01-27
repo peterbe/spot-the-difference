@@ -6,6 +6,8 @@ import { ProgressTimer } from "./ProgressTimer";
 import { WithShimmerEffect } from "./WithSimmerEffect";
 import classes from "./play.module.css";
 import { type Challenge, useChallenge } from "./use-challenge";
+import { AboutDoneChallenges } from "./AboutDoneChallenges";
+import type { DoneMemory } from "./types";
 
 const coinAudio = new Audio("/coin.mp3");
 // const applauseAudio = useRef(new Audio("/applause.mp3")); // TODO USE WHEN FINISHED SNIPPETS
@@ -16,7 +18,10 @@ const INITIAL_HINT_RADIUS = 200;
 export function Play() {
   const confetti = useRef(new JSConfetti());
   const [audioOn, setAudioOn] = useLocalStorage("audio-on", true);
-
+  const [doneChallenges, setDoneChallenges, removeDoneChallenges] =
+    useLocalStorage<DoneMemory>("done-challenges", {
+      challenges: [],
+    });
   const { challenge, setNewChallenge } = useChallenge();
 
   const [guess, setGuess] = useState<number | null>(null);
@@ -38,7 +43,7 @@ export function Play() {
       setSeconds((p) => p + 1);
     },
     // Delay in milliseconds or null to stop it
-    !(paused || hardPaused || stopped) ? 1000 : null,
+    !(paused || hardPaused || stopped) ? 1000 : null
   );
 
   useEffect(() => {
@@ -52,6 +57,26 @@ export function Play() {
       setStopped(true);
     }
   }, [seconds, maxSeconds]);
+
+  useEffect(() => {
+    if (stopped) {
+      setDoneChallenges((prev) => {
+        return {
+          challenges: [
+            ...prev.challenges.filter((c) => c.id !== challenge.id),
+            {
+              id: challenge.id,
+              hints: countHints,
+              tookSeconds: seconds,
+              guesses: guess || 0,
+              gotIt: true,
+              when: new Date().toISOString(),
+            },
+          ],
+        };
+      });
+    }
+  }, [stopped, challenge.id, countHints, seconds, guess, setDoneChallenges]);
 
   useEffect(() => {
     function listener() {
@@ -82,6 +107,21 @@ export function Play() {
         coinAudio.play();
         // applauseAudio.current.play();
       }
+      setDoneChallenges((prev) => {
+        return {
+          challenges: [
+            ...prev.challenges.filter((c) => c.id !== challenge.id),
+            {
+              id: challenge.id,
+              hints: countHints,
+              tookSeconds: seconds,
+              guesses: guess || 0,
+              gotIt: true,
+              when: new Date().toISOString(),
+            },
+          ],
+        };
+      });
     } else {
       if (audioOn) {
         clickAudio.play();
@@ -94,7 +134,7 @@ export function Play() {
     setGuess(null);
     setGuessCount(0);
     setGotIt(null);
-    setNewChallenge();
+    setNewChallenge(doneChallenges.challenges.map((c) => c.id));
     setStopped(false);
     confetti.current.clearCanvas();
     setHintRadius(0);
@@ -179,7 +219,9 @@ export function Play() {
               </td>
             </tr>
             <tr>
-              <td />
+              <td>
+                Type: <b>{challenge.snippet.category}</b>
+              </td>
               <td>click the character that is different ⤴︎ </td>
             </tr>
           </tbody>
@@ -263,21 +305,41 @@ export function Play() {
         </div>
       )}
 
-      <fieldset className={classes.settings}>
-        <label>
-          <input
-            name="audio"
-            type="checkbox"
-            role="switch"
-            aria-checked={audioOn}
-            checked={audioOn}
-            onChange={() => {
-              setAudioOn((was) => !was);
+      {doneChallenges.challenges.length > 0 && (
+        <AboutDoneChallenges challenges={doneChallenges.challenges} />
+      )}
+
+      <div className={`grid ${classes.settings}`}>
+        <div>
+          <fieldset>
+            <label>
+              <input
+                name="audio"
+                type="checkbox"
+                role="switch"
+                aria-checked={audioOn}
+                checked={audioOn}
+                onChange={() => {
+                  setAudioOn((was) => !was);
+                }}
+              />{" "}
+              Sounds on
+            </label>
+          </fieldset>
+        </div>
+        <div>
+          <button
+            type="button"
+            className="outline secondary"
+            style={{ fontSize: "70%" }}
+            onClick={() => {
+              removeDoneChallenges();
             }}
-          />{" "}
-          Sounds on
-        </label>
-      </fieldset>
+          >
+            Reset done challenges
+          </button>
+        </div>
+      </div>
 
       <CheatMaybe challenge={challenge} />
     </article>
