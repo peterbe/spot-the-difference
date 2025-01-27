@@ -30,7 +30,7 @@ function getRandomSnippetAndChallenge(): Challenge {
 
 export function useChallenge() {
   const [challenge, setChallenge] = useState(() =>
-    getRandomSnippetAndChallenge()
+    getRandomSnippetAndChallenge(),
   );
 
   function setNewChallenge(previousDoneIds: string[]) {

@@ -352,7 +352,7 @@ for (const [id, snippet] of SNIPPETS) {
       console.log(
         `Line ${i + 1} in ${id} is too long. It is ${
           line.length
-        } characters long`
+        } characters long`,
       );
     }
   });

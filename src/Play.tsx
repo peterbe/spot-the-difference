@@ -2,12 +2,12 @@ import JSConfetti from "js-confetti";
 import { useEffect, useRef, useState } from "react";
 import { useSearchParams } from "react-router";
 import { useDocumentTitle, useInterval, useLocalStorage } from "usehooks-ts";
+import { AboutDoneChallenges } from "./AboutDoneChallenges";
 import { ProgressTimer } from "./ProgressTimer";
 import { WithShimmerEffect } from "./WithSimmerEffect";
 import classes from "./play.module.css";
-import { type Challenge, useChallenge } from "./use-challenge";
-import { AboutDoneChallenges } from "./AboutDoneChallenges";
 import type { DoneMemory } from "./types";
+import { type Challenge, useChallenge } from "./use-challenge";
 
 const coinAudio = new Audio("/coin.mp3");
 // const applauseAudio = useRef(new Audio("/applause.mp3")); // TODO USE WHEN FINISHED SNIPPETS
@@ -43,7 +43,7 @@ export function Play() {
       setSeconds((p) => p + 1);
     },
     // Delay in milliseconds or null to stop it
-    !(paused || hardPaused || stopped) ? 1000 : null
+    !(paused || hardPaused || stopped) ? 1000 : null,
   );
 
   useEffect(() => {
