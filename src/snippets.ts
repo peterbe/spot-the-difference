@@ -20,13 +20,11 @@ const CATEGORIES = {
   SQL: "SQL",
 };
 
-export const SNIPPETS: {
-  [id: string]: Snippet;
-} = {
-  // --------------------------------------------------------------------------
-  untitled1: {
-    category: CATEGORIES.JSX,
-    text: `
+export const SNIPPETS = new Map<string, Snippet>();
+// --------------------------------------------------------------------------
+SNIPPETS.set("untitled1", {
+  category: CATEGORIES.JSX,
+  text: `
 import "./styles.css";
 
 export default function App() {
@@ -37,12 +35,12 @@ export default function App() {
   );
 }
 `.trim(),
-  },
-  // --------------------------------------------------------------------------
+});
+// --------------------------------------------------------------------------
 
-  untitled2: {
-    category: CATEGORIES.CSS,
-    text: `
+SNIPPETS.set(" untitled2", {
+  category: CATEGORIES.CSS,
+  text: `
 :root:not([data-theme=dark]) {
   --pico-text-selection-color: rgba(244, 93, 44, 0.25);
   --pico-primary: #bd3c13;
@@ -50,13 +48,13 @@ export default function App() {
   --pico-primary-underline: rgba(189, 60, 19, 0.5);
 }
 `.trim(),
-  },
+});
 
-  // --------------------------------------------------------------------------
+// --------------------------------------------------------------------------
 
-  untitled3: {
-    category: CATEGORIES.JSON,
-    text: `
+SNIPPETS.set("untitled3", {
+  category: CATEGORIES.JSON,
+  text: `
   "devDependencies": {
     "@eslint/js": "^9.17.0",
     "@types/react": "^18.3.18",
@@ -65,24 +63,24 @@ export default function App() {
     "eslint": "^9.17.0"
   }
 `.trim(),
-  },
+});
 
-  // --------------------------------------------------------------------------
+// --------------------------------------------------------------------------
 
-  scripts: {
-    category: CATEGORIES.JSON,
-    text: `
+SNIPPETS.set("scripts", {
+  category: CATEGORIES.JSON,
+  text: `
   "scripts": {
     "dev": "bunx --bun vite",
     "build": "tsc -b && bunx --bun vite build",
     "lint": "eslint .",
     "preview": "bunx --bun vite preview"
   },`.trim(),
-  },
-  // --------------------------------------------------------------------------
-  justfile: {
-    category: CATEGORIES.MAKE,
-    text: `
+});
+// --------------------------------------------------------------------------
+SNIPPETS.set("justfile", {
+  category: CATEGORIES.MAKE,
+  text: `
 dev:
     bun run dev -- --port 3000
 
@@ -92,37 +90,37 @@ build:
 start: build
     bun run preview -- --port 3000
     `.trim(),
-  },
-  // --------------------------------------------------------------------------
-  reactRouterRoute: {
-    category: CATEGORIES.JSX,
-    text: `
+});
+// --------------------------------------------------------------------------
+SNIPPETS.set("reactRouterRoute", {
+  category: CATEGORIES.JSX,
+  text: `
 <Route path="/concerts/:city" element={<City />} />
     `.trim(),
-  },
-  // --------------------------------------------------------------------------
-  rustHelloWord: {
-    category: CATEGORIES.RUST,
-    text: `
+});
+// --------------------------------------------------------------------------
+SNIPPETS.set("rustHelloWord", {
+  category: CATEGORIES.RUST,
+  text: `
 // Hello world in Rust
 
 fn main() {
     println!("Hello World!");
 }
     `.trim(),
-  },
-  // --------------------------------------------------------------------------
-  brainfunHelloWord: {
-    category: CATEGORIES.BRAINFUN,
-    text: `
+});
+// --------------------------------------------------------------------------
+SNIPPETS.set("brainfunHelloWord", {
+  category: CATEGORIES.BRAINFUN,
+  text: `
 ++++++++++[>+++++++>++++++++++>+++<<<-]>++.>+.+++++++
 ..+++.>++.<<+++++++++++++++.>.+++.------.--------.>+.
     `.trim(),
-  },
-  // --------------------------------------------------------------------------
-  cHelloWord: {
-    category: CATEGORIES.C,
-    text: `
+});
+// --------------------------------------------------------------------------
+SNIPPETS.set("cHelloWord", {
+  category: CATEGORIES.C,
+  text: `
 /* Hello World in C, Ansi-style */
 
 #include <stdio.h>
@@ -134,11 +132,11 @@ int main(void)
   return EXIT_SUCCESS;
 }
      `.trim(),
-  },
-  // --------------------------------------------------------------------------
-  htmlHelloWord: {
-    category: CATEGORIES.HTML,
-    text: `
+});
+// --------------------------------------------------------------------------
+SNIPPETS.set("htmlHelloWord", {
+  category: CATEGORIES.HTML,
+  text: `
 <!doctype html>
 <html>
 <!-- Hello World in HTML -->
@@ -150,12 +148,12 @@ Hello World!
 </body>
 </html>
      `.trim(),
-  },
+});
 
-  // --------------------------------------------------------------------------
-  typescripttype1: {
-    category: CATEGORIES.TYPE_SCRIPT,
-    text: `
+// --------------------------------------------------------------------------
+SNIPPETS.set("typescripttype1", {
+  category: CATEGORIES.TYPE_SCRIPT,
+  text: `
 export type Challenge = {
   snippet: Snippet;
   snippetArr: string[];
@@ -163,11 +161,11 @@ export type Challenge = {
   challenge: SnippetChallenge;
 };
      `.trim(),
-  },
-  // --------------------------------------------------------------------------
-  temperaturePython1: {
-    category: CATEGORIES.PYTHON,
-    text: `
+});
+// --------------------------------------------------------------------------
+SNIPPETS.set("temperaturePython1", {
+  category: CATEGORIES.PYTHON,
+  text: `
 for i in range(4, 100, 12):
     f = c2f(i)
     if is_mirror(i, math.ceil(f)):
@@ -177,11 +175,11 @@ for i in range(4, 100, 12):
     else:
         break
      `.trim(),
-  },
-  // --------------------------------------------------------------------------
-  temperatureTypescript1: {
-    category: CATEGORIES.TYPE_SCRIPT,
-    text: `
+});
+// --------------------------------------------------------------------------
+SNIPPETS.set("temperatureTypescript1", {
+  category: CATEGORIES.TYPE_SCRIPT,
+  text: `
 for (let c = 4; c < 100; c += 12) {
   const f = c2f(c);
   if (isMirror(c, Math.ceil(f))) {
@@ -192,11 +190,11 @@ for (let c = 4; c < 100; c += 12) {
     break;
   }
 }    `.trim(),
-  },
-  // --------------------------------------------------------------------------
-  temperatureGo1: {
-    category: CATEGORIES.GO,
-    text: `
+});
+// --------------------------------------------------------------------------
+SNIPPETS.set("temperatureGo1", {
+  category: CATEGORIES.GO,
+  text: `
 func main() {
     for c := 4; c < 100; c += 12 {
         var f = c2f(c)
@@ -210,11 +208,11 @@ func main() {
     }
 }
     `.trim(),
-  },
-  // --------------------------------------------------------------------------
-  temperatureRuby1: {
-    category: CATEGORIES.RUBY,
-    text: `
+});
+// --------------------------------------------------------------------------
+SNIPPETS.set("temperatureRuby1", {
+  category: CATEGORIES.RUBY,
+  text: `
 (4...100).step(12).each do |c|
     f = c2f(c)
     if is_mirror(c, f.ceil)
@@ -226,22 +224,22 @@ func main() {
     end
 end
     `.trim(),
-  },
-  // --------------------------------------------------------------------------
-  isMirrorRust: {
-    category: CATEGORIES.RUST,
-    text: `
+});
+// --------------------------------------------------------------------------
+SNIPPETS.set("isMirrorRust", {
+  category: CATEGORIES.RUST,
+  text: `
 fn is_mirror(a: i8, b: i8) -> bool {
     let a = massage(a);
     let b = reverse_string(massage(b));
     a == b
 }
      `.trim(),
-  },
-  // --------------------------------------------------------------------------
-  useEffectJS: {
-    category: CATEGORIES.JAVA_SCRIPT,
-    text: `
+});
+// --------------------------------------------------------------------------
+SNIPPETS.set("useEffectJS", {
+  category: CATEGORIES.JAVA_SCRIPT,
+  text: `
 useEffect(() => {
   fetch('/api/some/thing')
     .then(r => r.json())
@@ -249,20 +247,21 @@ useEffect(() => {
     .catch(err => setError(err))
 }, [])
      `.trim(),
-  },
-  // --------------------------------------------------------------------------
-  keysJS: {
-    category: CATEGORIES.JAVA_SCRIPT,
-    text: `
-const keys = Object.keys(person);
-const randomKey = keys[Math.floor(Math.random() * keys.length)];
-const value = person[randomKey];
+});
+// --------------------------------------------------------------------------
+SNIPPETS.set("keysJS", {
+  category: CATEGORIES.JAVA_SCRIPT,
+  text: `
+const keys = Object.keys(person)
+const len = keys.length
+const randomKey = keys[Math.floor(Math.random() * len)]
+const value = person[randomKey]
      `.trim(),
-  },
-  // --------------------------------------------------------------------------
-  selectStatsSQL: {
-    category: CATEGORIES.SQL,
-    text: `
+});
+// --------------------------------------------------------------------------
+SNIPPETS.set("selectStatsSQL", {
+  category: CATEGORIES.SQL,
+  text: `
 SELECT
   (total_time / 1000 / 60) AS total,
     (total_time/calls) AS avg, calls,
@@ -273,11 +272,11 @@ SELECT
       LIMIT 25;
 
      `.trim(),
-  },
-  // --------------------------------------------------------------------------
-  getResultsPy: {
-    category: CATEGORIES.PYTHON,
-    text: `
+});
+// --------------------------------------------------------------------------
+SNIPPETS.set("getResultsPy", {
+  category: CATEGORIES.PYTHON,
+  text: `
 def get_results(queryset, fields, size):
     count = queryset.count()
     results = []
@@ -285,20 +284,22 @@ def get_results(queryset, fields, size):
         results.append(record)
     return {"count": count, "results": results}
      `.trim(),
-  },
-  // --------------------------------------------------------------------------
-  readCompressedJs: {
-    category: CATEGORIES.JAVA_SCRIPT,
-    text: `
-export function readCompressedJsonFile(xpath) {
-  return JSON.parse(brotliDecompressSync(fs.readFileSync(xpath)))
+});
+// --------------------------------------------------------------------------
+SNIPPETS.set("readCompressedJs", {
+  category: CATEGORIES.JAVA_SCRIPT,
+  text: `
+export function readCompressedJsonFile(path) {
+  return JSON.parse(
+    brotliDecompressSync(readFileSync(path))
+  )
 }
       `.trim(),
-  },
-  // --------------------------------------------------------------------------
-  isKeyOfObject: {
-    category: CATEGORIES.TYPE_SCRIPT,
-    text: `
+});
+// --------------------------------------------------------------------------
+SNIPPETS.set("isKeyOfObject", {
+  category: CATEGORIES.TYPE_SCRIPT,
+  text: `
 function isKeyOfObject<T extends object>(
   key: string | number | symbol,
   obj: T,
@@ -306,11 +307,11 @@ function isKeyOfObject<T extends object>(
   return key in obj;
 }
       `.trim(),
-  },
-  // --------------------------------------------------------------------------
-  functionF: {
-    category: CATEGORIES.JAVA_SCRIPT,
-    text: `
+});
+// --------------------------------------------------------------------------
+SNIPPETS.set("functionF", {
+  category: CATEGORIES.JAVA_SCRIPT,
+  text: `
 async function f(fp, effort) {
   const originalBuffer = await fs.readFile(fp);
   const image = sharp(originalBuffer);
@@ -319,25 +320,40 @@ async function f(fp, effort) {
   return [buffer.length, width, { effort }];
 }
       `.trim(),
-  },
-  // --------------------------------------------------------------------------
-  copyJS: {
-    category: CATEGORIES.JAVA_SCRIPT,
-    text: `
+});
+// --------------------------------------------------------------------------
+SNIPPETS.set("copyJS", {
+  category: CATEGORIES.JAVA_SCRIPT,
+  text: `
 const original = {foo: "Foo"}
 const copy = Object.assign({}, original)
 copy.foo = "Bar"
 console.log([original.foo, copy.foo])
       `.trim(),
-  },
-  // --------------------------------------------------------------------------
-  parseCsvBun: {
-    category: CATEGORIES.TYPE_SCRIPT,
-    text: `
-const csv = parse(await file.text(), { header: true }) as Rec[];
+});
+// --------------------------------------------------------------------------
+SNIPPETS.set("parseCsvBun", {
+  category: CATEGORIES.TYPE_SCRIPT,
+  text: `
+const text = await file.text()
+const csv = parse(text, { header: true }) as Rec[]
 for (const row of csv) {
-  numbers.push(parseInt(row["Pageviews"] || "0"));
+  numbers.push(parseInt(row["Pageviews"] || "0"))
 }
       `.trim(),
-  },
-};
+});
+
+for (const [id, snippet] of SNIPPETS) {
+  snippet.text = snippet.text.trim();
+  // Check that the code isn't too long
+  const lines = snippet.text.split("\n");
+  lines.forEach((line, i) => {
+    if (line.length > 60) {
+      console.log(
+        `Line ${i + 1} in ${id} is too long. It is ${
+          line.length
+        } characters long`,
+      );
+    }
+  });
+}
