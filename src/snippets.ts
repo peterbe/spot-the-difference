@@ -72,7 +72,7 @@ SNIPPETS.set("scripts", {
   text: `
   "scripts": {
     "dev": "bunx --bun vite",
-    "build": "tsc -b && bunx --bun vite build",
+    "build": "bunx --bun vite build",
     "lint": "eslint .",
     "preview": "bunx --bun vite preview"
   },`.trim(),
@@ -95,7 +95,9 @@ start: build
 SNIPPETS.set("reactRouterRoute", {
   category: CATEGORIES.JSX,
   text: `
-<Route path="/concerts/:city" element={<City />} />
+<Route
+  path="/concerts/:city"
+  element={<City />} />
     `.trim(),
 });
 // --------------------------------------------------------------------------
@@ -316,7 +318,7 @@ async function f(fp, effort) {
   const originalBuffer = await fs.readFile(fp);
   const image = sharp(originalBuffer);
   const { width } = await image.metadata();
-  const buffer = await image.webp({ effort }).toBuffer();
+  const buffer = await webp({ effort }).toBuffer();
   return [buffer.length, width, { effort }];
 }
       `.trim(),
@@ -348,7 +350,7 @@ for (const [id, snippet] of SNIPPETS) {
   // Check that the code isn't too long
   const lines = snippet.text.split("\n");
   lines.forEach((line, i) => {
-    if (line.length > 60) {
+    if (line.length > 55) {
       console.log(
         `Line ${i + 1} in ${id} is too long. It is ${
           line.length
