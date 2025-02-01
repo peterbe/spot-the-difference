@@ -1,5 +1,21 @@
 .snippets {
-  padding: 30px;
+  padding: 4px;
+  border-radius: 0.5rem;
+}
+
+@media (min-width: 576px) {
+  /* desktop */
+  .snippets {
+    padding: 10px;
+    border-radius: 1rem;
+  }
+}
+@media (min-width: 768px) {
+  /* ipad'ish */
+  .snippets {
+    padding: 20px;
+    border-radius: 1.5rem;
+  }
 }
 
 .snippets span {

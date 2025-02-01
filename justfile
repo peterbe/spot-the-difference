@@ -11,10 +11,10 @@ start: build
     bun run preview
 
 lint:
-    bun run lint
+    bun run lint:check
 
-format: lint
-    bun run format
+format:
+    bun run lint
 
 install:
     bun install

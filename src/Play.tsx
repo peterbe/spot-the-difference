@@ -202,56 +202,47 @@ export function Play() {
   return (
     <article>
       {challenge && (
-        <table>
-          <thead>
-            <tr>
-              <th>Original</th>
-              <th>Messed with</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td className={paused || hardPaused ? classes.paused : undefined}>
-                <pre className={classes.snippets}>{snippetX}</pre>
-              </td>
-              <td className={paused || hardPaused ? classes.paused : undefined}>
-                <pre className={classes.snippets}>{differenceX}</pre>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                Type: <b>{challenge.snippet.category}</b>
-              </td>
-              <td>click the character that is different ⤴︎ </td>
-            </tr>
-          </tbody>
-        </table>
+        <div className="grid">
+          <div>
+            <h4>Original</h4>
+            <div className={paused || hardPaused ? classes.paused : undefined}>
+              <pre className={classes.snippets}>{snippetX}</pre>
+            </div>
+            <p>
+              Type: <b>{challenge.snippet.category}</b>
+            </p>
+          </div>
+
+          <div>
+            <h4>Messed with</h4>
+            <div className={paused || hardPaused ? classes.paused : undefined}>
+              <pre className={classes.snippets}>{differenceX}</pre>
+            </div>
+            <p>click the character that is different ⤴</p>
+          </div>
+        </div>
       )}
       {hintRadius > 0 && (
         <div
-          // className="hint-overlay"
           className={classes.hintOverlay}
           ref={hintOverlayRef}
           style={{ opacity: hintRadius / 100 }}
         />
       )}
-      {guess && (
+      <div className="grid">
         <p>
-          You clicked on <b>{challenge.snippetArr[guess]}</b>
+          Guesses: <b>{guessCount}</b>
         </p>
-      )}
-      <p>
-        Guesses: <b>{guessCount}</b>
-      </p>
-      {countHints > 0 && <p>Hint engaged!</p>}
-      {stopped && (
-        <WithShimmerEffect>
-          <hgroup>
-            <h3>Stopped</h3>
-            <p>Click "Next!"</p>
-          </hgroup>
-        </WithShimmerEffect>
-      )}
+        {countHints > 0 && <p>Hint engaged!</p>}
+        {stopped && (
+          <WithShimmerEffect>
+            <hgroup>
+              <h3>Stopped</h3>
+              <p>Click "Next!"</p>
+            </hgroup>
+          </WithShimmerEffect>
+        )}
+      </div>
       {(gotIt !== null || stopped) && (
         <article>
           <header>
