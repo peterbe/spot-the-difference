@@ -8,6 +8,7 @@ import { WithShimmerEffect } from "./WithSimmerEffect";
 import classes from "./play.module.css";
 import type { DoneMemory } from "./types";
 import { type Challenge, useChallenge } from "./use-challenge";
+import { useHasNoHover } from "./use-has-no-hover";
 
 const coinAudio = new Audio("/coin.mp3");
 // const applauseAudio = useRef(new Audio("/applause.mp3")); // TODO USE WHEN FINISHED SNIPPETS
@@ -92,6 +93,8 @@ export function Play() {
     };
   }, []);
 
+  const hasNoHover = useHasNoHover();
+
   function clicked(event: React.MouseEvent<HTMLSpanElement>, nth: number) {
     event.preventDefault();
     if (stopped || paused || hardPaused) {
@@ -99,7 +102,17 @@ export function Play() {
     }
     setGuess(nth);
     setGuessCount((prev) => prev + 1);
-    if (nth === challenge.challenge.characterAt) {
+
+    const hit = isHit(
+      nth,
+      challenge.challenge.characterAt,
+      challenge.snippetArr,
+      {
+        leninance: hasNoHover ? 1 : 0,
+      },
+    );
+
+    if (hit) {
       setGotIt(true);
       setStopped(true);
       confetti.current.addConfetti();
@@ -206,7 +219,13 @@ export function Play() {
           <div>
             <h4>Original</h4>
             <div className={paused || hardPaused ? classes.paused : undefined}>
-              <pre className={classes.snippets}>{snippetX}</pre>
+              <pre
+                className={`${classes.snippets} ${
+                  stopped ? classes.snippetsStopped : ""
+                }`}
+              >
+                {snippetX}
+              </pre>
             </div>
             <p>
               Type: <b>{challenge.snippet.category}</b>
@@ -216,7 +235,13 @@ export function Play() {
           <div>
             <h4>Messed with</h4>
             <div className={paused || hardPaused ? classes.paused : undefined}>
-              <pre className={classes.snippets}>{differenceX}</pre>
+              <pre
+                className={`${classes.snippets} ${
+                  stopped ? classes.snippetsStopped : ""
+                }`}
+              >
+                {differenceX}
+              </pre>
             </div>
             <p>click the character that is different ⤴</p>
           </div>
@@ -335,6 +360,23 @@ export function Play() {
       <CheatMaybe challenge={challenge} />
     </article>
   );
+}
+
+function isHit(
+  picked: number,
+  correct: number,
+  snippetArr: string[],
+  options: { leninance: number },
+) {
+  if (picked === correct) return true;
+  if (options.leninance > 0) {
+    const prevCharacter = snippetArr[picked - 1];
+    const nextCharacter = snippetArr[picked + 1];
+    if (picked === correct - 1 && prevCharacter !== "\n") return true;
+    if (picked === correct + 1 && nextCharacter !== "\n") return true;
+  }
+
+  return false;
 }
 
 function CheatMaybe({ challenge }: { challenge: Challenge }) {
