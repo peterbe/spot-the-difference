@@ -344,6 +344,30 @@ for (const row of csv) {
 }
       `.trim(),
 });
+// --------------------------------------------------------------------------
+SNIPPETS.set("hintOverlay", {
+  category: CATEGORIES.CSS,
+  text: `
+.hintOverlay {
+  position: absolute;
+  border-radius: 50%;
+  background-color: rgba(0, 0, 0, 0.07);
+  pointer-events: none;
+}     `.trim(),
+});
+// --------------------------------------------------------------------------
+SNIPPETS.set("cssBody", {
+  category: CATEGORIES.CSS,
+  text: `
+body {
+  margin: 0;
+  display: flex;
+  place-items: center;
+  min-width: 320px;
+  min-height: 100vh;
+}
+     `.trim(),
+});
 
 for (const [id, snippet] of SNIPPETS) {
   snippet.text = snippet.text.trim();

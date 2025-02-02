@@ -21,6 +21,13 @@
 .snippets span {
   cursor: pointer;
 }
+.snippets span:hover {
+  font-weight: bold;
+}
+
+.snippetsStopped span {
+  cursor: not-allowed;
+}
 
 .paused {
   filter: blur(5px);
