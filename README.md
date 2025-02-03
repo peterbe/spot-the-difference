@@ -5,7 +5,7 @@ in a text snippet that has been messed with.
 
 ## Play
 
-Go to <https://spot-the-difference-app.web.app/> to play.
+Go to <https://spot-the-difference.peterbe.com> to play.
 
 At the time of writing, it looks something like this:
 

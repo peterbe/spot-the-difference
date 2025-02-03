@@ -259,23 +259,25 @@ export function Play() {
           Guesses: <b>{guessCount}</b>
         </p>
         {countHints > 0 && <p>Hint engaged!</p>}
-        {stopped && (
+        {/* {stopped && (
           <WithShimmerEffect>
             <hgroup>
               <h3>Stopped</h3>
               <p>Click "Next!"</p>
             </hgroup>
           </WithShimmerEffect>
-        )}
+        )} */}
       </div>
       {(gotIt !== null || stopped) && (
-        <article>
-          <header>
-            {gotIt && <RandomHappyEmoji />}
-            {gotIt ? "You did it!" : stopped ? "Time ran out" : "Wrong"}
-            {!gotIt && <RandomSadEmoji />}
-          </header>
-        </article>
+        <hgroup style={{ textAlign: "center" }}>
+          <h2>
+            {gotIt ? "You did it!" : stopped ? "Time ran out" : "Wrong"}{" "}
+            {gotIt ? <RandomHappyEmoji /> : <RandomSadEmoji />}
+          </h2>
+          <WithShimmerEffect>
+            <p>Click "Next!"</p>
+          </WithShimmerEffect>
+        </hgroup>
       )}
 
       <ProgressTimer seconds={seconds} maxSeconds={maxSeconds} />
@@ -300,7 +302,8 @@ export function Play() {
                 if (hintRadius === 0) {
                   setHintRadius(INITIAL_HINT_RADIUS);
                 } else {
-                  setHintRadius((prev) => Math.max(10, prev - 10));
+                  setHintRadius(0);
+                  // setHintRadius((prev) => Math.max(10, prev - 10));
                 }
                 setCountHints((prev) => prev + 1);
               }
