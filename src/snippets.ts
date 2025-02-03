@@ -194,19 +194,17 @@ for (let c = 4; c < 100; c += 12) {
 }    `.trim(),
 });
 // --------------------------------------------------------------------------
-SNIPPETS.set("temperatureGo1", {
+SNIPPETS.set("temperatureGo2", {
   category: CATEGORIES.GO,
   text: `
-func main() {
-    for c := 4; c < 100; c += 12 {
-        var f = c2f(c)
-        if isMirror(c, int(math.Ceil(f))) {
-            printConversion(c, int(math.Ceil(f)))
-        } else if isMirror(c, int(math.Floor(f))) {
-            printConversion(c, int(math.Floor(f)))
-        } else {
-            break
-        }
+for c := 4; c < 100; c += 12 {
+    var f = c2f(c)
+    if isMirror(c, int(math.Ceil(f))) {
+        printConversion(c, int(math.Ceil(f)))
+    } else if isMirror(c, int(math.Floor(f))) {
+        printConversion(c, int(math.Floor(f)))
+    } else {
+        break
     }
 }
     `.trim(),
@@ -366,6 +364,52 @@ body {
   min-width: 320px;
   min-height: 100vh;
 }
+     `.trim(),
+});
+// --------------------------------------------------------------------------
+SNIPPETS.set("ulGithubjsx", {
+  category: CATEGORIES.JSX,
+  text: `
+<ul>
+  <li>
+    <ul>
+      <li>.github/</li>
+      <li>source/</li>
+      <li>test/</li>
+    </ul>
+  </li>
+  <li>.gitignore</li>
+  <li>README.md</li>
+</ul>
+     `.trim(),
+});
+// --------------------------------------------------------------------------
+SNIPPETS.set("biomeconfig", {
+  category: CATEGORIES.JSON,
+  text: `
+{
+  "vcs": {
+    "enabled": false,
+    "clientKind": "git",
+    "useIgnoreFile": false
+  },
+  "files": {
+    "ignoreUnknown": false,
+    "ignore": []
+  }
+}
+     `.trim(),
+});
+
+// --------------------------------------------------------------------------
+SNIPPETS.set("rubyDogClass", {
+  category: CATEGORIES.RUBY,
+  text: `
+class Dog
+  def set_name(a_name)
+    @name = a_name
+  end
+end
      `.trim(),
 });
 
