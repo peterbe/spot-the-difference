@@ -5,44 +5,57 @@ test("home page", async ({ page }) => {
   await expect(page).toHaveTitle("Spot the Difference");
 });
 
-// test("navigate main nav options", async ({ page }) => {
-//   await page.goto("/")
-//   await page.locator("#main-nav").getByRole("link", { name: "Archive" }).click()
-//   await expect(page).toHaveTitle(/Blog archive/)
+test("play", async ({ page }) => {
+  await page.goto("/");
+  await page.getByRole("button", { name: "Start!" }).click();
 
-//   await page.locator("#main-nav").getByRole("link", { name: "About" }).click()
-//   await expect(page).toHaveTitle(/About Peterbe.com/)
+  const messedWith = page.locator('[data-testid="messed-with-snippet"]');
+  await expect(messedWith).toBeVisible();
+  const messedWithText = await messedWith.textContent();
+  if (!messedWithText) throw new Error("No messed with text found");
+  const original = page.locator('[data-testid="original-snippet"]');
+  await expect(original).toBeVisible();
+  const originalText = await original.textContent();
+  if (!originalText) throw new Error("No original text found");
+  // console.log(originalText);
+  // console.log(messedWithText);
 
-//   await page.locator("#main-nav").getByRole("link", { name: "Contact" }).click()
-//   await expect(page).toHaveTitle(/Contact Peter/)
+  let correctSpot = -1;
+  for (let i = 0; i < originalText.length; i++) {
+    const char = originalText[i];
+    const messedWithChar = messedWithText[i];
+    if (char !== messedWithChar) {
+      // console.log("THE DIFFERENCE IS AT", i, messedWithText[i]);
+      correctSpot = i;
+      break;
+    }
+  }
 
-//   await page.locator("#main-nav").getByRole("link", { name: "Home" }).click()
-//   await expect(page).toHaveTitle(/Peterbe\.com/)
-// })
+  await page.waitForTimeout(100);
+  await page.getByRole("button", { name: "Pause" }).click();
+  await page.waitForTimeout(100);
+  await page.getByRole("button", { name: "Unpause" }).click();
+  await page.waitForTimeout(100);
+  await page.getByRole("button", { name: "Hint" }).click();
+  await page.waitForTimeout(100);
+  await page.getByRole("button", { name: "Hint" }).click();
 
-// test("navigation focus and scroll restoration", async ({ page }) => {
-//   await page.goto("/")
-//   const aboutLinkAtBottom = page
-//     .locator("footer")
-//     .getByRole("link", { name: "About" })
-//   await aboutLinkAtBottom.scrollIntoViewIfNeeded()
+  // Wrong
+  const wrongSpan = page
+    .getByTestId("messed-with-snippet")
+    .locator(`span:nth-child(${correctSpot === 0 ? 2 : 1})`);
+  await wrongSpan.click();
+  await expect(page.getByText("Guesses: 1")).toBeVisible();
 
-//   const scrollPosition = await page.evaluate(() => window.scrollY)
-//   expect(scrollPosition).toBeGreaterThanOrEqual(3000)
+  // Right
+  const rightSpan = page
+    .getByTestId("messed-with-snippet")
+    .locator(`span:nth-child(${correctSpot + 1})`);
+  await rightSpan.click();
+  await expect(
+    page.getByRole("heading", { name: "You did it!" })
+  ).toBeVisible();
 
-//   await aboutLinkAtBottom.click()
-//   await expect(page).toHaveTitle(/About Peterbe.com/)
-
-//   const newScrollPosition = await page.evaluate(() => window.scrollY)
-//   expect(newScrollPosition).toBe(0)
-
-//   await page.goBack()
-//   await expect(page).toHaveURL("/")
-
-//   // this seems to make scroll restoration have a chance to work
-//   await page.waitForTimeout(500)
-
-//   const returnScrollPosition = await page.evaluate(() => window.scrollY)
-//   expect(returnScrollPosition).toBeGreaterThanOrEqual(3000)
-//   expect(Math.floor(scrollPosition)).toBe(Math.floor(returnScrollPosition))
-// })
+  await page.waitForTimeout(1000);
+  await page.getByRole("button", { name: "Next!" }).click();
+});

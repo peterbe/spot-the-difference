@@ -10,7 +10,8 @@
     "lint:check": "biome check src",
     "preview": "bunx --bun vite preview",
     "prepare": "husky",
-    "test": "playwright test"
+    "test": "playwright test",
+    "playwright:codegen": "playwright codegen"
   },
   "dependencies": {
     "@picocss/pico": "^2.0.6",

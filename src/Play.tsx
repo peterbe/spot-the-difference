@@ -222,6 +222,7 @@ export function Play() {
             <h4>Original</h4>
             <div className={paused || hardPaused ? classes.paused : undefined}>
               <pre
+                data-testid="original-snippet"
                 className={`${classes.snippets} ${
                   stopped ? classes.snippetsStopped : ""
                 }`}
@@ -238,6 +239,7 @@ export function Play() {
             <h4>Messed with</h4>
             <div className={paused || hardPaused ? classes.paused : undefined}>
               <pre
+                data-testid="messed-with-snippet"
                 className={`${classes.snippets} ${
                   stopped ? classes.snippetsStopped : ""
                 }`}
