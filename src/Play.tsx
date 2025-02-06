@@ -1,13 +1,16 @@
 import JSConfetti from "js-confetti";
 import { useEffect, useRef, useState } from "react";
 import { useSearchParams } from "react-router";
-import { useDocumentTitle, useInterval, useLocalStorage } from "usehooks-ts";
+import { useDocumentTitle, useInterval } from "usehooks-ts";
 import { AboutDoneChallenges } from "./AboutDoneChallenges";
 import { ProgressTimer } from "./ProgressTimer";
 import { WithShimmerEffect } from "./WithSimmerEffect";
 import classes from "./play.module.css";
-import type { DoneMemory } from "./types";
+
+import { Settings } from "./settings";
+import { useAudio } from "./use-audio-on";
 import { type Challenge, useChallenge } from "./use-challenge";
+import { useDoneChallenges } from "./use-done-challenges";
 import { useHasNoHover } from "./use-has-no-hover";
 
 const coinAudio = new Audio("/coin.mp3");
@@ -18,11 +21,10 @@ const INITIAL_HINT_RADIUS = 200;
 
 export function Play() {
   const confetti = useRef(new JSConfetti());
-  const [audioOn, setAudioOn] = useLocalStorage("audio-on", true);
-  const [doneChallenges, setDoneChallenges, removeDoneChallenges] =
-    useLocalStorage<DoneMemory>("done-challenges", {
-      challenges: [],
-    });
+  // const [audioOn, setAudioOn] = useLocalStorage("audio-on", true);
+  const [audioOn] = useAudio();
+
+  const { doneChallenges, setDoneChallenges } = useDoneChallenges();
   const { challenge, setNewChallenge } = useChallenge();
 
   const [guess, setGuess] = useState<number | null>(null);
@@ -328,37 +330,7 @@ export function Play() {
         <AboutDoneChallenges challenges={doneChallenges.challenges} />
       )}
 
-      <div className={`grid ${classes.settings}`}>
-        <div>
-          <fieldset>
-            <label>
-              <input
-                name="audio"
-                type="checkbox"
-                role="switch"
-                aria-checked={audioOn}
-                checked={audioOn}
-                onChange={() => {
-                  setAudioOn((was) => !was);
-                }}
-              />{" "}
-              Sounds on
-            </label>
-          </fieldset>
-        </div>
-        <div>
-          <button
-            type="button"
-            className="outline secondary"
-            style={{ fontSize: "70%" }}
-            onClick={() => {
-              removeDoneChallenges();
-            }}
-          >
-            Reset done challenges
-          </button>
-        </div>
-      </div>
+      <Settings />
 
       <CheatMaybe challenge={challenge} />
     </article>
