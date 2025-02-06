@@ -9,10 +9,12 @@
     "lint": "biome check --write src",
     "lint:check": "biome check src",
     "preview": "bunx --bun vite preview",
-    "prepare": "husky"
+    "prepare": "husky",
+    "test": "playwright test"
   },
   "dependencies": {
     "@picocss/pico": "^2.0.6",
+    "@playwright/test": "^1.50.1",
     "clsx": "^2.1.1",
     "husky": "^9.1.7",
     "js-confetti": "^0.12.0",
