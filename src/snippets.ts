@@ -427,3 +427,22 @@ for (const [id, snippet] of SNIPPETS) {
     }
   });
 }
+
+if (import.meta.env.VITE_TEST) {
+  SNIPPETS.clear();
+  SNIPPETS.set("test1", {
+    category: CATEGORIES.PYTHON,
+    text: `
+def foo():
+  return "bar"
+       `.trim(),
+  });
+  SNIPPETS.set("test2", {
+    category: CATEGORIES.RUBY,
+    text: `
+def foo():
+  "bar"
+end
+       `.trim(),
+  });
+}
