@@ -12,10 +12,6 @@ export function AppRoutes() {
           <Route path="/" element={<App />} />
           <Route path="/play" element={<Play />} />
           <Route path="/about" element={<About />} />
-          {/* <Route path="dashboard" element={<Dashboard />}>
-          <Route index element={<RecentActivity />} />
-          <Route path="project/:id" element={<Project />} />
-        </Route> */}
         </Route>
       </Routes>
     </BrowserRouter>
