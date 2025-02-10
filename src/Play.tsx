@@ -267,9 +267,14 @@ export function Play() {
         />
       )}
       <div className="grid">
-        <p>
-          Guesses: <b>{guessCount}</b>
-        </p>
+        {guessCount > 0 ? (
+          <p style={{ textAlign: "right" }}>
+            Guesses: <b>{guessCount}</b>
+          </p>
+        ) : (
+          <p> &nbsp; </p>
+        )}
+
         {/* {countHints > 0 && <p>Hint engaged!</p>} */}
         {countHints === 1 && <p>You're only human!</p>}
         {countHints > 1 && <p>Used a hint</p>}
