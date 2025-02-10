@@ -413,6 +413,18 @@ end
      `.trim(),
 });
 
+// --------------------------------------------------------------------------
+SNIPPETS.set("importStatements1", {
+  category: CATEGORIES.TYPE_SCRIPT,
+  text: `
+import type { DoneChallenge } from "./types";
+import classes from "./done.module.css";
+import { SNIPPETS } from "./snippets";
+     `.trim(),
+});
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 for (const [id, snippet] of SNIPPETS) {
   snippet.text = snippet.text.trim();
   // Check that the code isn't too long

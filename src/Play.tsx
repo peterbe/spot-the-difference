@@ -27,7 +27,8 @@ export function Play() {
   const { doneChallenges, setDoneChallenges } = useDoneChallenges();
   const { challenge, setNewChallenge } = useChallenge();
 
-  const [guess, setGuess] = useState<number | null>(null);
+  // perhaps some day do something with the guess to say it was close or not
+  const [, setGuess] = useState<number | null>(null);
   const [guessCount, setGuessCount] = useState(0);
   const [gotIt, setGotIt] = useState<boolean | null>(null);
 
@@ -71,15 +72,22 @@ export function Play() {
               id: challenge.id,
               hints: countHints,
               tookSeconds: seconds,
-              guesses: guess || 0,
-              gotIt: true,
+              guesses: guessCount || 0,
+              gotIt: false,
               when: new Date().toISOString(),
             },
           ],
         };
       });
     }
-  }, [stopped, challenge.id, countHints, seconds, guess, setDoneChallenges]);
+  }, [
+    stopped,
+    challenge.id,
+    countHints,
+    seconds,
+    guessCount,
+    setDoneChallenges,
+  ]);
 
   useEffect(() => {
     function listener() {
@@ -130,7 +138,7 @@ export function Play() {
               id: challenge.id,
               hints: countHints,
               tookSeconds: seconds,
-              guesses: guess || 0,
+              guesses: guessCount || 0,
               gotIt: true,
               when: new Date().toISOString(),
             },
@@ -259,18 +267,17 @@ export function Play() {
         />
       )}
       <div className="grid">
-        <p>
-          Guesses: <b>{guessCount}</b>
-        </p>
-        {countHints > 0 && <p>Hint engaged!</p>}
-        {/* {stopped && (
-          <WithShimmerEffect>
-            <hgroup>
-              <h3>Stopped</h3>
-              <p>Click "Next!"</p>
-            </hgroup>
-          </WithShimmerEffect>
-        )} */}
+        {guessCount > 0 ? (
+          <p style={{ textAlign: "right" }}>
+            Guesses: <b>{guessCount}</b>
+          </p>
+        ) : (
+          <p> &nbsp; </p>
+        )}
+
+        {/* {countHints > 0 && <p>Hint engaged!</p>} */}
+        {countHints === 1 && <p>You're only human!</p>}
+        {countHints > 1 && <p>Used a hint</p>}
       </div>
       {(gotIt !== null || stopped) && (
         <hgroup style={{ textAlign: "center" }}>

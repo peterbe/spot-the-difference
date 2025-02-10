@@ -1,0 +1,7 @@
+.done {
+  margin-top: 100px;
+}
+
+.progress::-webkit-progress-value {
+  transition: width 0.5s ease;
+}
