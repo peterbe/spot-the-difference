@@ -18,6 +18,7 @@ const CATEGORIES = {
   RUBY: "Ruby",
   JAVA_SCRIPT: "JavaScript",
   SQL: "SQL",
+  BASH: "Bash",
 };
 
 export const SNIPPETS = new Map<string, Snippet>();
@@ -421,6 +422,30 @@ import type { DoneChallenge } from "./types";
 import classes from "./done.module.css";
 import { SNIPPETS } from "./snippets";
      `.trim(),
+});
+
+// --------------------------------------------------------------------------
+SNIPPETS.set("profilePageJsx", {
+  category: CATEGORIES.JSX,
+  text: `
+function ProfilePage({ userId }) {
+  return (
+    <Profile
+      userId={userId}
+      key={userId}
+    />
+  );
+}     `.trim(),
+});
+
+// --------------------------------------------------------------------------
+SNIPPETS.set("bashExpandRange", {
+  category: CATEGORIES.BASH,
+  text: `
+$ start=1; end=10
+$ eval echo {$start..$end}
+1 2 3 4 5 6 7 8 9 10
+`.trim(),
 });
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
