@@ -168,10 +168,10 @@ export function Play() {
   let documentTitle = `Playing | ${name}`;
   if (gotIt) {
     documentTitle = `Congratulations! | ${name}`;
-  } else if (paused || hardPaused) {
-    documentTitle = `Paused | ${name}`;
   } else if (stopped) {
     documentTitle = `Stopped | ${name}`;
+  } else if (paused || hardPaused) {
+    documentTitle = `Paused | ${name}`;
   }
   useDocumentTitle(documentTitle);
 
