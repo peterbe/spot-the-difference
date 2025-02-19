@@ -24,7 +24,7 @@ export function Play() {
   // const [audioOn, setAudioOn] = useLocalStorage("audio-on", true);
   const [audioOn] = useAudio();
 
-  const { doneChallenges, setDoneChallenges } = useDoneChallenges();
+  const { doneChallenges, addDoneChallenge } = useDoneChallenges();
   const { challenge, setNewChallenge } = useChallenge();
 
   // perhaps some day do something with the guess to say it was close or not
@@ -32,7 +32,7 @@ export function Play() {
   const [guessCount, setGuessCount] = useState(0);
   const [gotIt, setGotIt] = useState<boolean | null>(null);
 
-  const [maxSeconds] = useState(60);
+  const [maxSeconds] = useState(10);
   const [seconds, setSeconds] = useState<number>(0);
   const [paused, setPaused] = useState(false);
   const [hardPaused, setHardPaused] = useState(false);
@@ -43,7 +43,6 @@ export function Play() {
 
   useInterval(
     () => {
-      // Your custom logic here
       setSeconds((p) => p + 1);
     },
     // Delay in milliseconds or null to stop it
@@ -56,37 +55,30 @@ export function Play() {
     }
   }, [challenge]);
 
+  const stoppedChallengeIds = useRef(new Set<string>());
   useEffect(() => {
     if (seconds >= maxSeconds) {
       setStopped(true);
-    }
-  }, [seconds, maxSeconds]);
+      if (!stoppedChallengeIds.current.has(challenge.id)) {
+        stoppedChallengeIds.current.add(challenge.id);
 
-  useEffect(() => {
-    if (stopped) {
-      setDoneChallenges((prev) => {
-        return {
-          challenges: [
-            ...prev.challenges.filter((c) => c.id !== challenge.id),
-            {
-              id: challenge.id,
-              hints: countHints,
-              tookSeconds: seconds,
-              guesses: guessCount || 0,
-              gotIt: false,
-              when: new Date().toISOString(),
-            },
-          ],
-        };
-      });
+        addDoneChallenge({
+          challengeId: challenge.id,
+          hints: countHints,
+          tookSeconds: seconds,
+          guesses: guessCount || 0,
+          gotIt: false,
+          when: new Date().toISOString(),
+        });
+      }
     }
   }, [
-    stopped,
+    seconds,
+    maxSeconds,
+    addDoneChallenge,
     challenge.id,
     countHints,
-    seconds,
     guessCount,
-    setDoneChallenges,
   ]);
 
   useEffect(() => {
@@ -130,20 +122,14 @@ export function Play() {
         coinAudio.play();
         // applauseAudio.current.play();
       }
-      setDoneChallenges((prev) => {
-        return {
-          challenges: [
-            ...prev.challenges.filter((c) => c.id !== challenge.id),
-            {
-              id: challenge.id,
-              hints: countHints,
-              tookSeconds: seconds,
-              guesses: guessCount || 0,
-              gotIt: true,
-              when: new Date().toISOString(),
-            },
-          ],
-        };
+
+      addDoneChallenge({
+        challengeId: challenge.id,
+        hints: countHints,
+        tookSeconds: seconds,
+        guesses: guessCount || 0,
+        gotIt: true,
+        when: new Date().toISOString(),
       });
     } else {
       if (audioOn) {
@@ -157,9 +143,12 @@ export function Play() {
     setGuess(null);
     setGuessCount(0);
     setGotIt(null);
-    setNewChallenge(doneChallenges.challenges.map((c) => c.id));
+    setNewChallenge(
+      doneChallenges ? doneChallenges.map((c) => c.challengeId) : [],
+    );
     setStopped(false);
     confetti.current.clearCanvas();
+    setSeconds(0);
     setHintRadius(0);
     setCountHints(0);
   }
@@ -335,8 +324,8 @@ export function Play() {
         </div>
       )}
 
-      {doneChallenges.challenges.length > 0 && (
-        <AboutDoneChallenges challenges={doneChallenges.challenges} />
+      {doneChallenges && doneChallenges.length > 0 && (
+        <AboutDoneChallenges challenges={doneChallenges} />
       )}
 
       <Settings />
