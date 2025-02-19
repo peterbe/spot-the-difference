@@ -1,6 +1,6 @@
+import type { DoneChallenge } from "./db";
 import classes from "./done.module.css";
 import { SNIPPETS } from "./snippets";
-import type { DoneChallenge } from "./types";
 
 export function AboutDoneChallenges({
   challenges,
@@ -14,15 +14,17 @@ export function AboutDoneChallenges({
 
   return (
     <div className={classes.done}>
-      <p>
+      {/* <p>
         <b>
           You have completed {challenges.length} challenge
           {challenges.length === 1 ? "" : "s"}.
         </b>
-      </p>
+      </p> */}
 
       <label htmlFor="id_progress">
-        Challenges completed (of {countPossible}):
+        {/* Challenges completed (of {countPossible}): */}
+        You have completed {challenges.length} challenge
+        {challenges.length === 1 ? "" : "s"} (of {countPossible} possible).
       </label>
       <progress
         id="id_progress"
