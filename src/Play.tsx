@@ -7,6 +7,7 @@ import { ProgressTimer } from "./ProgressTimer";
 import { WithShimmerEffect } from "./WithSimmerEffect";
 import classes from "./play.module.css";
 
+import { FirestorePlay } from "./firestore-play";
 import { Settings } from "./settings";
 import { useAudio } from "./use-audio-on";
 import { type Challenge, useChallenge } from "./use-challenge";
@@ -221,7 +222,6 @@ export function Play() {
       }px`;
     }
   }, [hintRadius]);
-
   return (
     <article>
       {challenge && (
@@ -342,6 +342,8 @@ export function Play() {
       <Settings />
 
       <CheatMaybe challenge={challenge} />
+
+      <FirestorePlay />
     </article>
   );
 }

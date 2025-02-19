@@ -5,6 +5,7 @@ export type DoneChallenge = {
   guesses: number;
   gotIt: boolean;
   when: string;
+  firebaseId?: string;
 };
 export type DoneMemory = {
   challenges: DoneChallenge[];
