@@ -43,7 +43,6 @@ export function Play() {
 
   useInterval(
     () => {
-      // Your custom logic here
       setSeconds((p) => p + 1);
     },
     // Delay in milliseconds or null to stop it
@@ -55,18 +54,6 @@ export function Play() {
       setSeconds(0);
     }
   }, [challenge]);
-
-  // const stoppedEvent = useCallback(() => {
-  //   addDoneChallenge({
-  //     // id: 0, // XXX???
-  //     challengeId: challenge.id,
-  //     hints: countHints,
-  //     tookSeconds: seconds,
-  //     guesses: guessCount || 0,
-  //     gotIt: false,
-  //     when: new Date().toISOString(),
-  //   });
-  // }, [challenge.id, countHints, seconds, guessCount, addDoneChallenge]);
 
   const stoppedChallengeIds = useRef(new Set<string>());
   useEffect(() => {
@@ -93,42 +80,6 @@ export function Play() {
     countHints,
     guessCount,
   ]);
-
-  // useEffect(() => {
-  //   if (stopped) {
-  //     addDoneChallenge({
-  //       // id: 0, // XXX???
-  //       challengeId: challenge.id,
-  //       hints: countHints,
-  //       tookSeconds: seconds,
-  //       guesses: guessCount || 0,
-  //       gotIt: false,
-  //       when: new Date().toISOString(),
-  //     });
-  //     // setDoneChallenges((prev) => {
-  //     //   return {
-  //     //     challenges: [
-  //     //       ...prev.challenges.filter((c) => c.id !== challenge.id),
-  //     //       {
-  //     //         id: challenge.id,
-  //     //         hints: countHints,
-  //     //         tookSeconds: seconds,
-  //     //         guesses: guessCount || 0,
-  //     //         gotIt: false,
-  //     //         when: new Date().toISOString(),
-  //     //       },
-  //     //     ],
-  //     //   };
-  //     // });
-  //   }
-  // }, [
-  //   stopped,
-  //   challenge.id,
-  //   countHints,
-  //   seconds,
-  //   guessCount,
-  //   addDoneChallenge,
-  // ]);
 
   useEffect(() => {
     function listener() {
@@ -173,7 +124,6 @@ export function Play() {
       }
 
       addDoneChallenge({
-        // id: 0, // XXX???
         challengeId: challenge.id,
         hints: countHints,
         tookSeconds: seconds,
@@ -181,21 +131,6 @@ export function Play() {
         gotIt: true,
         when: new Date().toISOString(),
       });
-      // setDoneChallenges((prev) => {
-      //   return {
-      //     challenges: [
-      //       ...prev.challenges.filter((c) => c.id !== challenge.id),
-      //       {
-      //         id: challenge.id,
-      //         hints: countHints,
-      //         tookSeconds: seconds,
-      //         guesses: guessCount || 0,
-      //         gotIt: true,
-      //         when: new Date().toISOString(),
-      //       },
-      //     ],
-      //   };
-      // });
     } else {
       if (audioOn) {
         clickAudio.play();
