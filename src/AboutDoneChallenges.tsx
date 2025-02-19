@@ -14,13 +14,6 @@ export function AboutDoneChallenges({
 
   return (
     <div className={classes.done}>
-      {/* <p>
-        <b>
-          You have completed {challenges.length} challenge
-          {challenges.length === 1 ? "" : "s"}.
-        </b>
-      </p> */}
-
       <label htmlFor="id_progress">
         {/* Challenges completed (of {countPossible}): */}
         You have completed {challenges.length} challenge
