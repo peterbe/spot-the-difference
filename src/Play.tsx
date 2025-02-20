@@ -32,7 +32,7 @@ export function Play() {
   const [guessCount, setGuessCount] = useState(0);
   const [gotIt, setGotIt] = useState<boolean | null>(null);
 
-  const [maxSeconds] = useState(10);
+  const [maxSeconds] = useState(60);
   const [seconds, setSeconds] = useState<number>(0);
   const [paused, setPaused] = useState(false);
   const [hardPaused, setHardPaused] = useState(false);
