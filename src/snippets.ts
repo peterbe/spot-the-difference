@@ -447,6 +447,19 @@ $ eval echo {$start..$end}
 1 2 3 4 5 6 7 8 9 10
 `.trim(),
 });
+// --------------------------------------------------------------------------
+SNIPPETS.set("typescriptTypeStrings", {
+  category: CATEGORIES.TYPE_SCRIPT,
+  text: `
+export type ComponentRenderingProperties =
+  | 'Component'
+  | 'ErrorBoundary'
+  | 'HydrateFallback'
+  | 'children'
+  | 'element'
+  | 'hydrateFallbackElement'
+`.trim(),
+});
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
