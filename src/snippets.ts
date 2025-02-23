@@ -461,6 +461,22 @@ export type ComponentRenderingProperties =
 `.trim(),
 });
 
+// --------------------------------------------------------------------------
+SNIPPETS.set("sideprojectType", {
+  category: CATEGORIES.TYPE_SCRIPT,
+  text: `
+type SideProject = {
+  id: string
+  title: string
+  image: {
+    url: string
+    width: number
+    height: number
+  }
+}
+  `.trim(),
+});
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 for (const [id, snippet] of SNIPPETS) {
