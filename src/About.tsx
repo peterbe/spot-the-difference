@@ -12,6 +12,13 @@ export function About() {
         Made by <a href="https://www.peterbe.com">peterbe</a>
       </p>
       <p>
+        I blogged about this here: "
+        <a href="https://www.peterbe.com/plog/announcing-spot-the-difference">
+          Announcing: Spot the Difference
+        </a>
+        ."
+      </p>
+      <p>
         The code is open at{" "}
         <a href="https://github.com/peterbe/spot-the-difference">
           https://github.com/peterbe/spot-the-difference
