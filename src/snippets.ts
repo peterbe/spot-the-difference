@@ -447,6 +447,114 @@ $ eval echo {$start..$end}
 1 2 3 4 5 6 7 8 9 10
 `.trim(),
 });
+// --------------------------------------------------------------------------
+SNIPPETS.set("typescriptTypeStrings", {
+  category: CATEGORIES.TYPE_SCRIPT,
+  text: `
+export type ComponentRenderingProperties =
+  | 'Component'
+  | 'ErrorBoundary'
+  | 'HydrateFallback'
+  | 'children'
+  | 'element'
+  | 'hydrateFallbackElement'
+`.trim(),
+});
+
+// --------------------------------------------------------------------------
+SNIPPETS.set("sideprojectType", {
+  category: CATEGORIES.TYPE_SCRIPT,
+  text: `
+type SideProject = {
+  id: string
+  title: string
+  image: {
+    url: string
+    width: number
+    height: number
+  }
+}
+  `.trim(),
+});
+
+// --------------------------------------------------------------------------
+SNIPPETS.set("gitdiff", {
+  category: CATEGORIES.BASH,
+  text: `
+git diff --quiet $CACHED_COMMIT_REF $COMMIT_REF
+status=$?
+echo "diff exit code: $status"
+exit $status
+  `.trim(),
+});
+
+// --------------------------------------------------------------------------
+SNIPPETS.set("tsconfig", {
+  category: CATEGORIES.JSON,
+  text: `
+{
+  "include": ["."],
+  "compilerOptions": {
+    "module": "ES2022",
+    "target": "ES2020",
+    "moduleResolution": "node",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true
+  }
+}
+    `.trim(),
+});
+// --------------------------------------------------------------------------
+SNIPPETS.set("picoEmailInput", {
+  category: CATEGORIES.HTML,
+  text: `
+<label>
+  Email
+  <input
+    type="email"
+    name="email"
+    placeholder="Email"
+    autocomplete="email"
+  />
+</label>
+    `.trim(),
+});
+
+// --------------------------------------------------------------------------
+
+SNIPPETS.set("picoRangeInput", {
+  category: CATEGORIES.HTML,
+  text: `
+<label>
+  Brightness
+  <input type="range" />
+</label>
+
+<label>
+  Contrast
+  <input type="range" value="40" />
+</label>
+    `.trim(),
+});
+
+// --------------------------------------------------------------------------
+
+SNIPPETS.set("picoDropdownInput", {
+  category: CATEGORIES.HTML,
+  text: `
+<!-- Dropdown -->
+<details class="dropdown">
+  <summary>Dropdown</summary>
+  <ul>
+    <li><a href="#">Solid</a></li>
+    <li><a href="#">Liquid</a></li>
+    <li><a href="#">Gas</a></li>
+    <li><a href="#">Plasma</a></li>
+  </ul>
+</details>
+    `.trim(),
+});
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

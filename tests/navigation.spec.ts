@@ -17,15 +17,12 @@ test("play", async ({ page }) => {
   await expect(original).toBeVisible();
   const originalText = await original.textContent();
   if (!originalText) throw new Error("No original text found");
-  // console.log(originalText);
-  // console.log(messedWithText);
 
   let correctSpot = -1;
   for (let i = 0; i < originalText.length; i++) {
     const char = originalText[i];
     const messedWithChar = messedWithText[i];
     if (char !== messedWithChar) {
-      // console.log("THE DIFFERENCE IS AT", i, messedWithText[i]);
       correctSpot = i;
       break;
     }
@@ -53,9 +50,22 @@ test("play", async ({ page }) => {
     .locator(`span:nth-child(${correctSpot + 1})`);
   await rightSpan.click();
   await expect(
-    page.getByRole("heading", { name: "You did it!" })
+    page.getByRole("heading", { name: "You did it!" }),
   ).toBeVisible();
 
   await page.waitForTimeout(1000);
   await page.getByRole("button", { name: "Next!" }).click();
+});
+
+test("play with timer disabled", async ({ page }) => {
+  await page.goto("/");
+  await page.getByRole("button", { name: "Start!" }).click();
+
+  await page.getByRole("switch", { name: "Use timer" }).uncheck();
+  await expect(page.getByRole("button", { name: "Pause" })).toBeHidden();
+  await expect(page.getByRole("progressbar")).toHaveCount(0);
+
+  await page.getByRole("switch", { name: "Use timer" }).check();
+  await expect(page.getByRole("button", { name: "Pause" })).toHaveCount(1);
+  await expect(page.getByRole("progressbar")).toHaveCount(1);
 });

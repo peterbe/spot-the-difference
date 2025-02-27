@@ -6,8 +6,8 @@
   "scripts": {
     "dev": "bunx --bun vite",
     "build": "tsc -b && bunx --bun vite build",
-    "lint": "biome check --write src",
-    "lint:check": "biome check src",
+    "lint": "biome check --write src tests",
+    "lint:check": "biome check src tests",
     "preview": "bunx --bun vite preview",
     "prepare": "husky",
     "test": "playwright test",
@@ -18,20 +18,22 @@
     "@playwright/test": "^1.50.1",
     "clsx": "^2.1.1",
     "firebase": "^11.3.1",
+    "dexie": "^4.0.11",
+    "dexie-react-hooks": "^1.1.7",
     "husky": "^9.1.7",
     "js-confetti": "^0.12.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "react-router": "^7.1.5",
-    "usehooks-ts": "^3.1.0"
+    "react-router": "^7.2.0",
+    "usehooks-ts": "^3.1.1"
   },
   "devDependencies": {
     "@biomejs/biome": "1.9.4",
     "@types/react": "^18.3.18",
     "@types/react-dom": "^18.3.5",
-    "@vitejs/plugin-react-swc": "^3.7.2",
-    "globals": "^15.14.0",
+    "@vitejs/plugin-react-swc": "^3.8.0",
+    "globals": "^15.15.0",
     "typescript": "~5.7.3",
-    "vite": "^6.0.11"
+    "vite": "^6.2.0"
   }
 }

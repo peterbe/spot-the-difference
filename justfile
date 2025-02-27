@@ -39,3 +39,6 @@ test:
 e2e:
     VITE_TEST=1 bun run build
     bun run test
+
+# alias
+upgrade: outdated

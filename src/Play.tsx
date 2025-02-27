@@ -13,6 +13,7 @@ import { useAudio } from "./use-audio-on";
 import { type Challenge, useChallenge } from "./use-challenge";
 import { useDoneChallenges } from "./use-done-challenges";
 import { useHasNoHover } from "./use-has-no-hover";
+import { useTimer } from "./use-timer";
 
 const coinAudio = new Audio("/coin.mp3");
 // const applauseAudio = useRef(new Audio("/applause.mp3")); // TODO USE WHEN FINISHED SNIPPETS
@@ -25,8 +26,9 @@ export function Play() {
   // const [audioOn, setAudioOn] = useLocalStorage("audio-on", true);
   const [audioOn] = useAudio();
 
-  const { doneChallenges, setDoneChallenges } = useDoneChallenges();
+  const { doneChallenges, addDoneChallenge } = useDoneChallenges();
   const { challenge, setNewChallenge } = useChallenge();
+  const [timer] = useTimer();
 
   // perhaps some day do something with the guess to say it was close or not
   const [, setGuess] = useState<number | null>(null);
@@ -44,11 +46,10 @@ export function Play() {
 
   useInterval(
     () => {
-      // Your custom logic here
       setSeconds((p) => p + 1);
     },
     // Delay in milliseconds or null to stop it
-    !(paused || hardPaused || stopped) ? 1000 : null,
+    !(paused || hardPaused || stopped || !timer) ? 1000 : null,
   );
 
   useEffect(() => {
@@ -57,37 +58,32 @@ export function Play() {
     }
   }, [challenge]);
 
+  const stoppedChallengeIds = useRef(new Set<string>());
   useEffect(() => {
     if (seconds >= maxSeconds) {
       setStopped(true);
-    }
-  }, [seconds, maxSeconds]);
+      if (!stoppedChallengeIds.current.has(challenge.id)) {
+        stoppedChallengeIds.current.add(challenge.id);
 
-  useEffect(() => {
-    if (stopped) {
-      setDoneChallenges((prev) => {
-        return {
-          challenges: [
-            ...prev.challenges.filter((c) => c.id !== challenge.id),
-            {
-              id: challenge.id,
-              hints: countHints,
-              tookSeconds: seconds,
-              guesses: guessCount || 0,
-              gotIt: false,
-              when: new Date().toISOString(),
-            },
-          ],
-        };
-      });
+        addDoneChallenge({
+          challengeId: challenge.id,
+          hints: countHints,
+          tookSeconds: seconds,
+          guesses: guessCount || 0,
+          gotIt: false,
+          when: new Date().toISOString(),
+          timer,
+        });
+      }
     }
   }, [
-    stopped,
+    seconds,
+    maxSeconds,
+    addDoneChallenge,
     challenge.id,
     countHints,
-    seconds,
     guessCount,
-    setDoneChallenges,
+    timer,
   ]);
 
   useEffect(() => {
@@ -108,7 +104,7 @@ export function Play() {
 
   function clicked(event: React.MouseEvent<HTMLSpanElement>, nth: number) {
     event.preventDefault();
-    if (stopped || paused || hardPaused) {
+    if ((stopped || paused || hardPaused) && timer) {
       return;
     }
     setGuess(nth);
@@ -131,20 +127,15 @@ export function Play() {
         coinAudio.play();
         // applauseAudio.current.play();
       }
-      setDoneChallenges((prev) => {
-        return {
-          challenges: [
-            ...prev.challenges.filter((c) => c.id !== challenge.id),
-            {
-              id: challenge.id,
-              hints: countHints,
-              tookSeconds: seconds,
-              guesses: guessCount || 0,
-              gotIt: true,
-              when: new Date().toISOString(),
-            },
-          ],
-        };
+
+      addDoneChallenge({
+        challengeId: challenge.id,
+        hints: countHints,
+        tookSeconds: seconds,
+        guesses: guessCount || 0,
+        gotIt: true,
+        when: new Date().toISOString(),
+        timer,
       });
     } else {
       if (audioOn) {
@@ -158,9 +149,12 @@ export function Play() {
     setGuess(null);
     setGuessCount(0);
     setGotIt(null);
-    setNewChallenge(doneChallenges.challenges.map((c) => c.id));
+    setNewChallenge(
+      doneChallenges ? doneChallenges.map((c) => c.challengeId) : [],
+    );
     setStopped(false);
     confetti.current.clearCanvas();
+    setSeconds(0);
     setHintRadius(0);
     setCountHints(0);
   }
@@ -169,9 +163,9 @@ export function Play() {
   let documentTitle = `Playing | ${name}`;
   if (gotIt) {
     documentTitle = `Congratulations! | ${name}`;
-  } else if (stopped) {
+  } else if (stopped && timer) {
     documentTitle = `Stopped | ${name}`;
-  } else if (paused || hardPaused) {
+  } else if ((paused || hardPaused) && timer) {
     documentTitle = `Paused | ${name}`;
   }
   useDocumentTitle(documentTitle);
@@ -222,13 +216,16 @@ export function Play() {
       }px`;
     }
   }, [hintRadius]);
+
+  const blurText = (paused || hardPaused) && timer;
+
   return (
     <article>
       {challenge && (
         <div className="grid">
           <div>
             <h4>Original</h4>
-            <div className={paused || hardPaused ? classes.paused : undefined}>
+            <div className={blurText ? classes.paused : undefined}>
               <pre
                 data-testid="original-snippet"
                 className={`${classes.snippets} ${
@@ -245,7 +242,7 @@ export function Play() {
 
           <div>
             <h4>Messed with</h4>
-            <div className={paused || hardPaused ? classes.paused : undefined}>
+            <div className={blurText ? classes.paused : undefined}>
               <pre
                 data-testid="messed-with-snippet"
                 className={`${classes.snippets} ${
@@ -291,22 +288,24 @@ export function Play() {
         </hgroup>
       )}
 
-      <ProgressTimer seconds={seconds} maxSeconds={maxSeconds} />
+      {timer && <ProgressTimer seconds={seconds} maxSeconds={maxSeconds} />}
 
       {challenge && (
         <div role="group">
-          <button
-            disabled={!!stopped}
-            type="button"
-            onClick={() => {
-              setHardPaused((was) => !was);
-            }}
-          >
-            {hardPaused ? "Unpause" : "Pause"}
-          </button>
+          {timer && (
+            <button
+              disabled={!!stopped}
+              type="button"
+              onClick={() => {
+                setHardPaused((was) => !was);
+              }}
+            >
+              {hardPaused ? "Unpause" : "Pause"}
+            </button>
+          )}
 
           <button
-            disabled={!!stopped || paused || hardPaused}
+            disabled={timer && (!!stopped || paused || hardPaused)}
             type="button"
             onClick={() => {
               if (correctRef.current) {
@@ -335,8 +334,8 @@ export function Play() {
         </div>
       )}
 
-      {doneChallenges.challenges.length > 0 && (
-        <AboutDoneChallenges challenges={doneChallenges.challenges} />
+      {doneChallenges && doneChallenges.length > 0 && (
+        <AboutDoneChallenges challenges={doneChallenges} />
       )}
 
       <Settings />
