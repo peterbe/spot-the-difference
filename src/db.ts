@@ -8,6 +8,7 @@ export interface DoneChallenge {
   guesses: number;
   gotIt: boolean;
   when: string;
+  timer?: boolean;
 }
 
 export const db = new Dexie("spot-the-difference") as Dexie & {

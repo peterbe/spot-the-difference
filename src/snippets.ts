@@ -477,6 +477,85 @@ type SideProject = {
   `.trim(),
 });
 
+// --------------------------------------------------------------------------
+SNIPPETS.set("gitdiff", {
+  category: CATEGORIES.BASH,
+  text: `
+git diff --quiet $CACHED_COMMIT_REF $COMMIT_REF
+status=$?
+echo "diff exit code: $status"
+exit $status
+  `.trim(),
+});
+
+// --------------------------------------------------------------------------
+SNIPPETS.set("tsconfig", {
+  category: CATEGORIES.JSON,
+  text: `
+{
+  "include": ["."],
+  "compilerOptions": {
+    "module": "ES2022",
+    "target": "ES2020",
+    "moduleResolution": "node",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true
+  }
+}
+    `.trim(),
+});
+// --------------------------------------------------------------------------
+SNIPPETS.set("picoEmailInput", {
+  category: CATEGORIES.HTML,
+  text: `
+<label>
+  Email
+  <input
+    type="email"
+    name="email"
+    placeholder="Email"
+    autocomplete="email"
+  />
+</label>
+    `.trim(),
+});
+
+// --------------------------------------------------------------------------
+
+SNIPPETS.set("picoRangeInput", {
+  category: CATEGORIES.HTML,
+  text: `
+<label>
+  Brightness
+  <input type="range" />
+</label>
+
+<label>
+  Contrast
+  <input type="range" value="40" />
+</label>
+    `.trim(),
+});
+
+// --------------------------------------------------------------------------
+
+SNIPPETS.set("picoDropdownInput", {
+  category: CATEGORIES.HTML,
+  text: `
+<!-- Dropdown -->
+<details class="dropdown">
+  <summary>Dropdown</summary>
+  <ul>
+    <li><a href="#">Solid</a></li>
+    <li><a href="#">Liquid</a></li>
+    <li><a href="#">Gas</a></li>
+    <li><a href="#">Plasma</a></li>
+  </ul>
+</details>
+    `.trim(),
+});
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 for (const [id, snippet] of SNIPPETS) {
