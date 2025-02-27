@@ -18,18 +18,18 @@ import { app } from "./firebase-app";
 type FirebaseContext = {
   user: User | null | false; // null means not signed in, false means loading
   auth: Auth | null;
-  db: Firestore | null;
+  firestore: Firestore | null;
 };
 export const FirebaseContext = createContext<FirebaseContext>({
   user: false,
   auth: null,
-  db: null,
+  firestore: null,
 });
 
 export const FirebaseProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const auth = getAuth(app);
-  const db = getFirestore(app);
+  const firestore = getFirestore(app);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -39,7 +39,7 @@ export const FirebaseProvider = ({ children }: { children: ReactNode }) => {
   }, [auth]);
 
   return (
-    <FirebaseContext.Provider value={{ user, auth, db }}>
+    <FirebaseContext.Provider value={{ user, auth, firestore }}>
       {children}
     </FirebaseContext.Provider>
   );
