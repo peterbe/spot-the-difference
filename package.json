@@ -6,8 +6,8 @@
   "scripts": {
     "dev": "bunx --bun vite",
     "build": "tsc -b && bunx --bun vite build",
-    "lint": "biome check --write src",
-    "lint:check": "biome check src",
+    "lint": "biome check --write src tests",
+    "lint:check": "biome check src tests",
     "preview": "bunx --bun vite preview",
     "prepare": "husky",
     "test": "playwright test",

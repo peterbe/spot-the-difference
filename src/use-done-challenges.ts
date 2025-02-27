@@ -39,6 +39,7 @@ export function useDoneChallenges() {
             guesses: challenge.guesses,
             gotIt: challenge.gotIt,
             when: challenge.when,
+            timer: true,
           };
         });
       if (toMigrate.length) {
