@@ -134,6 +134,7 @@ export function Play() {
         guesses: guessCount || 0,
         gotIt: true,
         when: new Date().toISOString(),
+        timer,
       });
     } else {
       if (audioOn) {
