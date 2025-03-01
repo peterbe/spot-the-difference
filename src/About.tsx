@@ -1,10 +1,8 @@
-import { useNavigate } from "react-router";
 import { useDocumentTitle } from "usehooks-ts";
-import classes from "./about.module.css";
+import { Promo } from "./Promo";
 
 export function About() {
   useDocumentTitle("About: Spot the Difference");
-  const navigate = useNavigate();
   return (
     <div>
       <h2>About Spot the Difference</h2>
@@ -55,16 +53,7 @@ export function About() {
         </li>
       </ol>
 
-      <div className={classes.banner}>
-        <button
-          type="button"
-          onClick={() => {
-            navigate("/play");
-          }}
-        >
-          Start!
-        </button>
-      </div>
+      <Promo />
     </div>
   );
 }
