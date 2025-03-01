@@ -556,6 +556,50 @@ SNIPPETS.set("picoDropdownInput", {
     `.trim(),
 });
 
+// --------------------------------------------------------------------------
+
+SNIPPETS.set("mediamFunctionTs", {
+  category: CATEGORIES.TYPE_SCRIPT,
+  text: `
+function medium(numbers: number[]): number | null {
+  if (numbers.length === 0) return null;
+  const sorted = numbers.slice().sort((a, b) => a - b);
+  const mid = Math.floor(sorted.length / 2);
+  return sorted.length % 2 !== 0
+    ? sorted[mid]
+    : (sorted[mid - 1] + sorted[mid]) / 2;
+}
+    `.trim(),
+});
+
+// --------------------------------------------------------------------------
+
+SNIPPETS.set("goMean", {
+  category: CATEGORIES.GO,
+  text: `
+func mean(data []float64) float64 {
+	sum := 0.0
+	for _, value := range data {
+		sum += value
+	}
+	return sum / float64(len(data))
+}
+    `.trim(),
+});
+
+// --------------------------------------------------------------------------
+
+SNIPPETS.set("goPrintMean", {
+  category: CATEGORIES.GO,
+  text: `
+func main() {
+	data := []float64{12.0, 15.0, 18.0, 21.0, 24.0}
+	std := stdDev(data)
+	fmt.Printf("The standard deviation is: %f\n", std)
+}
+    `.trim(),
+});
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 for (const [id, snippet] of SNIPPETS) {
