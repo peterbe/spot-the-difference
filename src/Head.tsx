@@ -1,11 +1,14 @@
 import classes from "./head.module.css";
 
-import { NavLink } from "react-router";
+import { NavLink, useLocation } from "react-router";
 
 export function Head() {
+  const { pathname } = useLocation();
+  const showPlayLink = !(pathname === "/play" || pathname === "/");
+
   return (
     <header>
-      <nav>
+      <nav data-testid="nav">
         <ul>
           <li>
             <h1 className={classes.title}>
@@ -14,6 +17,11 @@ export function Head() {
           </li>
         </ul>
         <ul>
+          {showPlayLink && (
+            <li>
+              <NavLink to="/play">Play!</NavLink>
+            </li>
+          )}
           <li>
             <NavLink to="/about">About</NavLink>
           </li>
