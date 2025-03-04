@@ -69,3 +69,22 @@ test("play with timer disabled", async ({ page }) => {
   await expect(page.getByRole("button", { name: "Pause" })).toHaveCount(1);
   await expect(page.getByRole("progressbar")).toHaveCount(1);
 });
+
+test("header link to play", async ({ page }) => {
+  await page.goto("/");
+  const header = page.getByTestId("nav");
+  await header.getByRole("link", { name: "Stats" }).click();
+  await expect(page).toHaveTitle(/Stats/);
+  await expect(page).toHaveURL("/stats");
+
+  await header.getByRole("link", { name: "Play!" }).click();
+  await expect(page).toHaveTitle(/Playing/);
+  await expect(page).toHaveURL("/play");
+  await expect(header.getByRole("link", { name: "Play!" })).not.toBeVisible();
+
+  await header.getByRole("link", { name: "About" }).click();
+  await expect(page).toHaveTitle(/About/);
+  await expect(page).toHaveURL("/about");
+  await header.getByRole("link", { name: "Play!" }).click();
+  await expect(page).toHaveURL("/play");
+});
