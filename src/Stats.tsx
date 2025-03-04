@@ -83,8 +83,9 @@ export function Stats() {
   }, [firestore, user]);
 
   const byChallengeIdByTookSeconds: [string, number[], number][] = [];
+  const byYoubyChallengeIdByTookSeconds: Record<string, number[]> = {};
   for (const [challengeId, plays] of Object.entries(byChallengeId)) {
-    if (plays.length < 3) continue;
+    if (plays.length < 4) continue;
     const candidates = plays
       .filter((play) => play.gotIt)
       .map((play) => play.tookSeconds);
@@ -92,8 +93,19 @@ export function Stats() {
     if (m) {
       byChallengeIdByTookSeconds.push([challengeId, candidates, m]);
     }
+    if (user) {
+      for (const play of plays) {
+        if (user.uid === play._user) {
+          if (!(challengeId in byYoubyChallengeIdByTookSeconds)) {
+            byYoubyChallengeIdByTookSeconds[challengeId] = [];
+          }
+          byYoubyChallengeIdByTookSeconds[challengeId].push(play.tookSeconds);
+        }
+      }
+    }
   }
   byChallengeIdByTookSeconds.sort((a, b) => b[2] - a[2]);
+  console.log(byYoubyChallengeIdByTookSeconds);
 
   return (
     <div>
@@ -122,7 +134,13 @@ export function Stats() {
           <article key={challengeId}>
             <pre className={playClasses.snippets}>{snippet.text}</pre>
             <footer>
-              Seconds {median.toFixed(1)} seconds, {candidates.length} plays
+              On average {median.toFixed(1)} seconds, {candidates.length} plays
+              <br />
+              {byYoubyChallengeIdByTookSeconds[challengeId] && (
+                <YourBest
+                  numbers={byYoubyChallengeIdByTookSeconds[challengeId]}
+                />
+              )}
             </footer>
           </article>
         );
@@ -130,6 +148,10 @@ export function Stats() {
       <Promo />
     </div>
   );
+}
+function YourBest({ numbers }: { numbers: number[] }) {
+  const best = Math.min(...numbers);
+  return <b>You did it in {best} seconds</b>;
 }
 
 function Stat({ title, number }: { title: string; number: number | null }) {
