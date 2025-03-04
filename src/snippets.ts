@@ -600,6 +600,36 @@ func main() {
     `.trim(),
 });
 
+// --------------------------------------------------------------------------
+
+SNIPPETS.set("hintOverlaycss", {
+  category: CATEGORIES.CSS,
+  text: `
+.hintOverlay {
+  position: absolute;
+  border-radius: 50%;
+  background-color: rgba(0, 0, 0, 0.07);
+  pointer-events: none;
+}
+    `.trim(),
+});
+
+// --------------------------------------------------------------------------
+
+SNIPPETS.set("rustLenAsserts", {
+  category: CATEGORIES.RUST,
+  text: `
+assert_eq!('_'.len_utf8(), 1);
+assert_eq!('_'.len_utf16(), 1);
+assert_eq!('£'.len_utf8(), 2);
+assert_eq!('£'.len_utf16(), 1);
+assert_eq!('ऊ'.len_utf8(), 3);
+assert_eq!('ऊ'.len_utf16(), 1);
+assert_eq!('🤨'.len_utf8(), 4);
+assert_eq!('🤨'.len_utf16(), 2);
+    `.trim(),
+});
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 for (const [id, snippet] of SNIPPETS) {

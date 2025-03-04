@@ -22,6 +22,3 @@ export const db = new Dexie("spot-the-difference") as Dexie & {
 db.version(1).stores({
   done: "++id", // primary key "id" (for the runtime!)
 });
-
-// export type { Challenge };
-// export { db };
