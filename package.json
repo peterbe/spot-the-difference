@@ -15,7 +15,7 @@
   },
   "dependencies": {
     "@picocss/pico": "^2.0.6",
-    "@playwright/test": "^1.50.1",
+    "@playwright/test": "^1.51.0",
     "clsx": "^2.1.1",
     "firebase": "^11.4.0",
     "dexie": "^4.0.11",
