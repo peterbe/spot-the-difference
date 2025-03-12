@@ -2,11 +2,11 @@ import classes from "./settings.module.css";
 
 import { useAudio } from "./use-audio-on";
 import { useDoneChallenges } from "./use-done-challenges";
-import { useTimer } from "./use-timer";
+import { useEnableTimer } from "./use-enable-timer";
 
 export function Settings() {
   const [audioOn, setAudioOn] = useAudio();
-  const [timer, setTimer] = useTimer();
+  const [timer, setTimer] = useEnableTimer();
   const { removeDoneChallenges } = useDoneChallenges();
   return (
     <div className={`grid ${classes.settings}`}>

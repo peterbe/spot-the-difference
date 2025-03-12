@@ -19,6 +19,7 @@ const CATEGORIES = {
   JAVA_SCRIPT: "JavaScript",
   SQL: "SQL",
   BASH: "Bash",
+  PERL: "Perl",
 };
 
 export const SNIPPETS = new Map<string, Snippet>();
@@ -595,7 +596,7 @@ SNIPPETS.set("goPrintMean", {
 func main() {
 	data := []float64{12.0, 15.0, 18.0, 21.0, 24.0}
 	std := stdDev(data)
-	fmt.Printf("The standard deviation is: %f\n", std)
+	fmt.Printf("The standard deviation is: %f", std)
 }
     `.trim(),
 });
@@ -627,6 +628,78 @@ assert_eq!('ऊ'.len_utf8(), 3);
 assert_eq!('ऊ'.len_utf16(), 1);
 assert_eq!('🤨'.len_utf8(), 4);
 assert_eq!('🤨'.len_utf16(), 2);
+    `.trim(),
+});
+
+// --------------------------------------------------------------------------
+
+SNIPPETS.set("sqliteMutex", {
+  category: CATEGORIES.C,
+  text: `
+void sqlite3_mutex_free(sqlite3_mutex *p){
+  if( p ){
+    assert( sqlite3GlobalConfig.mutex.xMutexFree );
+    sqlite3GlobalConfig.mutex.xMutexFree(p);
+  }
+}
+    `.trim(),
+});
+
+// --------------------------------------------------------------------------
+
+SNIPPETS.set("sqlite3PcacheRef", {
+  category: CATEGORIES.C,
+  text: `
+void sqlite3PcacheRef(PgHdr *p){
+  assert(p->nRef>0);
+  assert( sqlite3PcachePageSanity(p) );
+  p->nRef++;
+  p->pCache->nRefSum++;
+}
+    `.trim(),
+});
+// --------------------------------------------------------------------------
+
+SNIPPETS.set("hasPropertyTs", {
+  category: CATEGORIES.TYPE_SCRIPT,
+  text: `
+const hasProperty = <TKey extends string>(
+  obj: unknown,
+  key: TKey,
+): obj is { [k in TKey]: unknown } => {
+  return typeof obj === 'object' &&
+         obj !== null && key in obj
+}
+    `.trim(),
+});
+
+// --------------------------------------------------------------------------
+
+SNIPPETS.set("honoApp", {
+  category: CATEGORIES.JAVA_SCRIPT,
+  text: `
+import { Hono } from 'hono'
+const app = new Hono()
+
+app.get('/', (c) => c.text('Hono!'))
+
+export default app
+    `.trim(),
+});
+// --------------------------------------------------------------------------
+
+SNIPPETS.set("uuidPerl", {
+  category: CATEGORIES.PERL,
+  text: `
+use UUID::Generator::PurePerl;
+
+sub create_search_id {
+    my $this =shift;
+    my $args=shift;
+    my $ug = UUID::Generator::PurePerl->new();
+    my $uuid1 = $ug->generate_v1();
+    return $uuid1;
+}
     `.trim(),
 });
 

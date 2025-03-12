@@ -85,10 +85,13 @@ export function Stats() {
   const byChallengeIdByTookSeconds: [string, number[], number][] = [];
   const byYoubyChallengeIdByTookSeconds: Record<string, number[]> = {};
   for (const [challengeId, plays] of Object.entries(byChallengeId)) {
-    if (plays.length < 4) continue;
     const candidates = plays
       .filter((play) => play.gotIt)
       .map((play) => play.tookSeconds);
+    if (candidates.length < 7) {
+      continue;
+    }
+
     const m = medium(candidates);
     if (m) {
       byChallengeIdByTookSeconds.push([challengeId, candidates, m]);
@@ -105,7 +108,6 @@ export function Stats() {
     }
   }
   byChallengeIdByTookSeconds.sort((a, b) => b[2] - a[2]);
-  console.log(byYoubyChallengeIdByTookSeconds);
 
   return (
     <div>
