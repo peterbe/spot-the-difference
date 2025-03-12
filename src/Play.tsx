@@ -5,6 +5,7 @@ import { useDocumentTitle } from "usehooks-ts";
 import { AboutDoneChallenges } from "./AboutDoneChallenges";
 import { DoneThemAll } from "./DoneThemAll";
 import { ProgressTimer } from "./ProgressTimer";
+import { RandomHappyEmoji, RandomSadEmoji } from "./RandomEmoji";
 import { WithShimmerEffect } from "./WithSimmerEffect";
 import classes from "./play.module.css";
 import { Settings } from "./settings";
@@ -389,70 +390,4 @@ function isHit(
   }
 
   return false;
-}
-
-function RandomHappyEmoji() {
-  const emojis = [
-    "😀",
-    "😃",
-    "😄",
-    "😁",
-    "😆",
-    "😅",
-    "😂",
-    "🤣",
-    "😊",
-    "😇",
-    "🙂",
-    "🙃",
-    "😉",
-    "😌",
-    "😍",
-    "😘",
-    "😗",
-    "😙",
-    "😚",
-    "😋",
-    "😛",
-    "😝",
-    "😜",
-    "🤪",
-    "🤨",
-    "🧐",
-    "🤓",
-    "😎",
-    "🤩",
-    "🥳",
-    "😏",
-    "😒",
-    "😞",
-    "😔",
-    "😟",
-    "😕",
-    "🙁",
-    "☹️",
-    "😣",
-    "😖",
-    "😫",
-    "😩",
-  ];
-  const randomIndex = Math.floor(Math.random() * emojis.length);
-  return <span>{emojis[randomIndex]}</span>;
-}
-function RandomSadEmoji() {
-  const emojis = [
-    "😢",
-    "😞",
-    "😔",
-    "😟",
-    "😕",
-    "🙁",
-    "☹️",
-    "😣",
-    "😖",
-    "😫",
-    "😩",
-  ];
-  const randomIndex = Math.floor(Math.random() * emojis.length);
-  return <span>{emojis[randomIndex]}</span>;
 }
