@@ -15,6 +15,7 @@
         "react": "^18.3.1",
         "react-dom": "^18.3.1",
         "react-router": "^7.2.0",
+        "react-timer-hook": "^4.0.1",
         "usehooks-ts": "^3.1.1",
       },
       "devDependencies": {
@@ -364,6 +365,8 @@
     "react-dom": ["react-dom@18.3.1", "", { "dependencies": { "loose-envify": "^1.1.0", "scheduler": "^0.23.2" }, "peerDependencies": { "react": "^18.3.1" } }, "sha512-5m4nQKp+rZRb09LNH59GM4BxTh9251/ylbKIbpe7TpGxfJ+9kv6BLkLBXIjjspbgbnIBNqlI23tRnTWT0snUIw=="],
 
     "react-router": ["react-router@7.2.0", "", { "dependencies": { "@types/cookie": "^0.6.0", "cookie": "^1.0.1", "set-cookie-parser": "^2.6.0", "turbo-stream": "2.4.0" }, "peerDependencies": { "react": ">=18", "react-dom": ">=18" }, "optionalPeers": ["react-dom"] }, "sha512-fXyqzPgCPZbqhrk7k3hPcCpYIlQ2ugIXDboHUzhJISFVy2DEPsmHgN588MyGmkIOv3jDgNfUE3kJi83L28s/LQ=="],
+
+    "react-timer-hook": ["react-timer-hook@4.0.1", "", { "peerDependencies": { "react": ">=16.8.0" } }, "sha512-tOye9WelyDctxIk2FnH+jqXhIx+mHr8wf1v2SR0ZJDYMKSH6JVAUj70OT3oOGWuWIFSCW4GxPDM9QGwEOAOOKA=="],
 
     "require-directory": ["require-directory@2.1.1", "", {}, "sha512-fGxEI7+wsG9xrvdjsrlmL22OMTTiHRwAMroiEeMgq8gzoLC/PQr7RsRDSTLUg/bZAZtF+TVIkHc6/4RIKrui+Q=="],
 

@@ -1,0 +1,11 @@
+.container {
+  text-align: center;
+}
+.header {
+  padding: 40px;
+  font-size: 200%;
+}
+.button {
+  padding: 40px;
+  font-size: 120%;
+}

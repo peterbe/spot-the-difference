@@ -1,41 +1,85 @@
 import JSConfetti from "js-confetti";
 import { useEffect, useRef, useState } from "react";
-import { useSearchParams } from "react-router";
-import { useDocumentTitle, useInterval } from "usehooks-ts";
+import { useTimer } from "react-timer-hook";
+import { useDocumentTitle } from "usehooks-ts";
 import { AboutDoneChallenges } from "./AboutDoneChallenges";
+import { DoneThemAll } from "./DoneThemAll";
 import { ProgressTimer } from "./ProgressTimer";
 import { WithShimmerEffect } from "./WithSimmerEffect";
 import classes from "./play.module.css";
-
 import { Settings } from "./settings";
+import { SNIPPETS } from "./snippets";
 import { useAudio } from "./use-audio-on";
-import { type Challenge, useChallenge } from "./use-challenge";
+import { useChallenge } from "./use-challenge";
 import { useDoneChallenges } from "./use-done-challenges";
+import { useEnableTimer } from "./use-enable-timer";
 import { useHasNoHover } from "./use-has-no-hover";
-import { useTimer } from "./use-timer";
 
 const coinAudio = new Audio("/coin.mp3");
-// const applauseAudio = useRef(new Audio("/applause.mp3")); // TODO USE WHEN FINISHED SNIPPETS
 const clickAudio = new Audio("/click.mp3");
+// const applauseAudio = new Audio("/applause.mp3"); // TODO USE WHEN FINISHED SNIPPETS
 
 const INITIAL_HINT_RADIUS = 200;
 
+const maxSeconds = 60;
+
 export function Play() {
   const confetti = useRef(new JSConfetti());
-  // const [audioOn, setAudioOn] = useLocalStorage("audio-on", true);
   const [audioOn] = useAudio();
 
   const { doneChallenges, addDoneChallenge } = useDoneChallenges();
+
+  const doneThemAll = doneChallenges && doneChallenges.length > SNIPPETS.size;
   const { challenge, setNewChallenge } = useChallenge();
-  const [timer] = useTimer();
+
+  const [timer] = useEnableTimer();
+
+  // XXX Is this still needed??
+  const stoppedChallengeIds = useRef(new Set<string>());
+
+  const expiryTimestamp = new Date();
+  expiryTimestamp.setSeconds(expiryTimestamp.getSeconds() + 60);
+
+  const {
+    seconds,
+    isRunning,
+    pause: pauseTimer,
+    resume: resumeTimer,
+    restart: restartTimer,
+  } = useTimer({
+    expiryTimestamp,
+    onExpire: () => {
+      setStopped(true);
+      if (challenge) {
+        if (!stoppedChallengeIds.current.has(challenge.id)) {
+          stoppedChallengeIds.current.add(challenge.id);
+
+          addDoneChallenge({
+            challengeId: challenge.id,
+            hints: countHints,
+            tookSeconds: seconds,
+            guesses: guessCount || 0,
+            gotIt: false,
+            when: new Date().toISOString(),
+            timer,
+          });
+        }
+      }
+    },
+    interval: 1000,
+  });
+
+  useEffect(() => {
+    if (doneChallenges && doneChallenges.length > SNIPPETS.size) {
+      pauseTimer();
+    }
+  }, [doneChallenges, pauseTimer]);
 
   // perhaps some day do something with the guess to say it was close or not
   const [, setGuess] = useState<number | null>(null);
   const [guessCount, setGuessCount] = useState(0);
   const [gotIt, setGotIt] = useState<boolean | null>(null);
 
-  const [maxSeconds] = useState(60);
-  const [seconds, setSeconds] = useState<number>(0);
   const [paused, setPaused] = useState(false);
   const [hardPaused, setHardPaused] = useState(false);
   const [stopped, setStopped] = useState(false);
@@ -43,61 +87,31 @@ export function Play() {
   const [hintRadius, setHintRadius] = useState(0);
   const [countHints, setCountHints] = useState(0);
 
-  useInterval(
-    () => {
-      setSeconds((p) => p + 1);
-    },
-    // Delay in milliseconds or null to stop it
-    !(paused || hardPaused || stopped || !timer) ? 1000 : null,
-  );
-
   useEffect(() => {
     if (challenge) {
-      setSeconds(0);
+      const time = new Date();
+      time.setSeconds(time.getSeconds() + maxSeconds);
+      restartTimer(time);
     }
-  }, [challenge]);
-
-  const stoppedChallengeIds = useRef(new Set<string>());
-  useEffect(() => {
-    if (seconds >= maxSeconds) {
-      setStopped(true);
-      if (!stoppedChallengeIds.current.has(challenge.id)) {
-        stoppedChallengeIds.current.add(challenge.id);
-
-        addDoneChallenge({
-          challengeId: challenge.id,
-          hints: countHints,
-          tookSeconds: seconds,
-          guesses: guessCount || 0,
-          gotIt: false,
-          when: new Date().toISOString(),
-          timer,
-        });
-      }
-    }
-  }, [
-    seconds,
-    maxSeconds,
-    addDoneChallenge,
-    challenge.id,
-    countHints,
-    guessCount,
-    timer,
-  ]);
+  }, [challenge, restartTimer]);
 
   useEffect(() => {
     function listener() {
       if (document.hidden) {
         setPaused(true);
+        pauseTimer();
       } else {
         setPaused(false);
+        if (!hardPaused && challenge && !stopped) {
+          resumeTimer();
+        }
       }
     }
     document.addEventListener("visibilitychange", listener);
     return () => {
       document.removeEventListener("visibilitychange", listener);
     };
-  }, []);
+  }, [pauseTimer, resumeTimer, hardPaused, stopped, challenge]);
 
   const hasNoHover = useHasNoHover();
 
@@ -121,6 +135,7 @@ export function Play() {
     if (hit) {
       setGotIt(true);
       setStopped(true);
+      pauseTimer();
       confetti.current.addConfetti();
       if (audioOn) {
         coinAudio.play();
@@ -153,9 +168,12 @@ export function Play() {
     );
     setStopped(false);
     confetti.current.clearCanvas();
-    setSeconds(0);
     setHintRadius(0);
     setCountHints(0);
+
+    const time = new Date();
+    time.setSeconds(time.getSeconds() + maxSeconds);
+    restartTimer(time);
   }
 
   const name = "Spot the Difference";
@@ -169,28 +187,7 @@ export function Play() {
   }
   useDocumentTitle(documentTitle);
 
-  // XXX refactor out to own component and memoized
-  const snippetX = challenge.snippetArr.map((character, i) => {
-    return (
-      <span key={`${character}${i}`} onClick={(event) => clicked(event, i)}>
-        {character}
-      </span>
-    );
-  });
   const correctRef = useRef<HTMLSpanElement>(null);
-  const differenceX = challenge.differenceArr.map((character, i) => {
-    const bother = !(character === "\n" || character === " ");
-    return (
-      <span
-        key={`${character}${i}`}
-        ref={i === challenge.challenge.characterAt ? correctRef : undefined}
-        onClick={(event) => bother && clicked(event, i)}
-      >
-        {character}
-      </span>
-    );
-  });
-
   const hintOverlayRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -220,7 +217,8 @@ export function Play() {
 
   return (
     <article>
-      {challenge && (
+      {doneThemAll && <DoneThemAll />}
+      {!doneThemAll && (
         <div className="grid">
           <div>
             <h4>Original</h4>
@@ -231,7 +229,16 @@ export function Play() {
                   stopped ? classes.snippetsStopped : ""
                 }`}
               >
-                {snippetX}
+                {challenge.snippetArr.map((character, i) => {
+                  return (
+                    <span
+                      key={`${character}${i}`}
+                      onClick={(event) => clicked(event, i)}
+                    >
+                      {character}
+                    </span>
+                  );
+                })}
               </pre>
             </div>
             <p>
@@ -248,7 +255,22 @@ export function Play() {
                   stopped ? classes.snippetsStopped : ""
                 }`}
               >
-                {differenceX}
+                {challenge.differenceArr.map((character, i) => {
+                  const bother = !(character === "\n" || character === " ");
+                  return (
+                    <span
+                      key={`${character}${i}`}
+                      ref={
+                        i === challenge.challenge.characterAt
+                          ? correctRef
+                          : undefined
+                      }
+                      onClick={(event) => bother && clicked(event, i)}
+                    >
+                      {character}
+                    </span>
+                  );
+                })}
               </pre>
             </div>
             <p>click the character that is different ⤴</p>
@@ -287,9 +309,14 @@ export function Play() {
         </hgroup>
       )}
 
-      {timer && <ProgressTimer seconds={seconds} maxSeconds={maxSeconds} />}
+      {timer && !doneThemAll && (
+        <ProgressTimer
+          seconds={seconds === 0 ? seconds : maxSeconds - seconds}
+          maxSeconds={maxSeconds}
+        />
+      )}
 
-      {challenge && (
+      {!doneThemAll && (
         <div role="group">
           {timer && (
             <button
@@ -297,6 +324,11 @@ export function Play() {
               type="button"
               onClick={() => {
                 setHardPaused((was) => !was);
+                if (isRunning) {
+                  pauseTimer();
+                } else {
+                  resumeTimer();
+                }
               }}
             >
               {hardPaused ? "Unpause" : "Pause"}
@@ -338,8 +370,6 @@ export function Play() {
       )}
 
       <Settings />
-
-      <CheatMaybe challenge={challenge} />
     </article>
   );
 }
@@ -359,22 +389,6 @@ function isHit(
   }
 
   return false;
-}
-
-function CheatMaybe({ challenge }: { challenge: Challenge }) {
-  const [searchParams] = useSearchParams();
-  const cheat = Boolean(JSON.parse(searchParams.get("cheat") || "false"));
-
-  if (cheat) {
-    return (
-      <div style={{ marginTop: 30 }}>
-        <hr />
-        <pre>{JSON.stringify(challenge.challenge, undefined, 2)}</pre>
-      </div>
-    );
-  }
-
-  return null;
 }
 
 function RandomHappyEmoji() {
