@@ -5,11 +5,12 @@
   "type": "module",
   "scripts": {
     "dev": "bunx --bun vite",
-    "build": "tsc -b && bunx --bun vite build",
+    "build": "tsc -b && bunx --bun vite build && bun run ssg",
     "lint": "biome check --write src tests",
     "lint:check": "biome check src tests",
     "preview": "bunx --bun vite preview",
     "prepare": "husky",
+    "ssg": "bun run src/scripts/generate-static-pages.ts",
     "test": "playwright test",
     "playwright:codegen": "playwright codegen"
   },
