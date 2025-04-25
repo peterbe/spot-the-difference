@@ -702,6 +702,19 @@ sub create_search_id {
 }
     `.trim(),
 });
+// --------------------------------------------------------------------------
+
+SNIPPETS.set("appRouts", {
+  category: CATEGORIES.JSX,
+  text: `
+<Route element={<Layout />}>
+  <Route path="/" element={<App />} />
+  <Route path="/play" element={<Play />} />
+  <Route path="/about" element={<About />} />
+  <Route path="/stats" element={<Stats />} />
+</Route>
+    `.trim(),
+});
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

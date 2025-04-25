@@ -5,6 +5,7 @@ import { Layout } from "./Layout";
 import { Play } from "./Play";
 import { Stats } from "./Stats";
 
+// Has to be a default export for the pre-render script to work
 export default function AppRoutes() {
   return (
     <Routes>

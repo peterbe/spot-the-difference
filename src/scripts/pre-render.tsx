@@ -7,12 +7,17 @@ const vite = await createServer({
   appType: "custom",
 });
 
+const getAppRoutes = async () => {
+  const { default: AppRoutes } = await vite.ssrLoadModule("/src/AppRoutes");
+  return AppRoutes;
+};
+
 export const preRenderApp = async (
   html: string,
   path: string,
   title: string,
 ) => {
-  const { default: AppRoutes } = await vite.ssrLoadModule("/src/routes");
+  const AppRoutes = await getAppRoutes();
 
   const reactHtml = renderToString(
     <StaticRouter location={path}>
