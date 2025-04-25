@@ -9,6 +9,7 @@ const cases = [
 test.each(cases)("%s should have html and title", async (file, title) => {
   const html = await Bun.file(file).text();
   expect(html).not.toContain('<div id="root"></div>');
+  expect(html).not.toContain("<!--ssg-outlet-->");
   const match = html.match(/<title>(.*)<\/title>/);
   expect(match).not.toBeNull();
   if (match) {

@@ -12,14 +12,15 @@ async function main() {
   const templateHtml = await Bun.file("dist/_index.html").text();
   if (!templateHtml) throw new Error("templateFile is empty");
 
-  const aboutHtml = await preRenderApp(templateHtml, "/about", ABOUT);
-  await Bun.file("dist/about.html").write(aboutHtml);
-
-  const statsHtml = await preRenderApp(templateHtml, "/stats", STATS);
-  await Bun.file("dist/stats.html").write(statsHtml);
-
-  const rootHtml = await preRenderApp(templateHtml, "/", ROOT);
-  await Bun.file("dist/index.html").write(rootHtml);
+  const pages = [
+    ["/about", "dist/about.html", ABOUT],
+    ["/stats", "dist/stats.html", STATS],
+    ["/", "dist/index.html", ROOT],
+  ];
+  for (const [path, dest, title] of pages) {
+    const pageHtml = await preRenderApp(templateHtml, path, title);
+    await Bun.file(dest).write(pageHtml);
+  }
 }
 
 main()

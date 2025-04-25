@@ -1,8 +1,8 @@
 import { renderToString } from "react-dom/server";
 import { StaticRouter } from "react-router";
-import { createServer as createViteServer } from "vite";
+import { createServer } from "vite";
 
-const vite = await createViteServer({
+const vite = await createServer({
   server: { middlewareMode: true },
   appType: "custom",
 });
@@ -20,9 +20,7 @@ export const preRenderApp = async (
     </StaticRouter>,
   );
 
-  const finalHtml = html
-    .replace('<div id="root"></div>', `<div id="root">${reactHtml}</div>`)
+  return html
+    .replace("<!--ssg-outlet-->", reactHtml)
     .replace(/<title>.*<\/title>/, `<title>${title}</title>`);
-
-  return finalHtml;
 };
