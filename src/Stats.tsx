@@ -17,6 +17,7 @@ import { useFirebase } from "./firebase-context";
 import playClasses from "./play.module.css";
 import { SNIPPETS } from "./snippets";
 import classes from "./stats.module.css";
+import { STATS } from "./titles";
 import { useFirebaseAutoSignIn } from "./use-firebase-signin";
 
 type UnsubscribeType = ReturnType<typeof onSnapshot>;
@@ -28,7 +29,7 @@ type DoneChallengeFirestore = Omit<DoneChallenge, "id"> & {
 type ByChallengeId = Record<string, DoneChallengeFirestore[]>;
 
 export function Stats() {
-  useDocumentTitle("Stats: Spot the Difference");
+  useDocumentTitle(STATS);
 
   const { firestore } = useFirebase();
   const { user } = useFirebaseAutoSignIn();

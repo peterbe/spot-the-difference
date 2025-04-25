@@ -1,8 +1,9 @@
 import { useDocumentTitle } from "usehooks-ts";
 import { Promo } from "./Promo";
+import { ABOUT } from "./titles";
 
 export function About() {
-  useDocumentTitle("About: Spot the Difference");
+  useDocumentTitle(ABOUT);
   return (
     <div>
       <h2>About Spot the Difference</h2>

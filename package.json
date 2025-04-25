@@ -5,12 +5,15 @@
   "type": "module",
   "scripts": {
     "dev": "bunx --bun vite",
-    "build": "tsc -b && bunx --bun vite build",
+    "build": "tsc -b && bunx --bun vite build && bun run ssg",
     "lint": "biome check --write src tests",
     "lint:check": "biome check src tests",
     "preview": "bunx --bun vite preview",
     "prepare": "husky",
-    "test": "playwright test",
+    "ssg": "bun run src/scripts/generate-static-pages.ts",
+    "test": "bun run test:ssg && bun run test:playwright",
+    "test:ssg": "bun test ./tests/ssg.test.ts",
+    "test:playwright": "playwright test",
     "playwright:codegen": "playwright codegen"
   },
   "dependencies": {
@@ -30,6 +33,7 @@
   },
   "devDependencies": {
     "@biomejs/biome": "1.9.4",
+    "@types/bun": "^1.2.10",
     "@types/react": "^18.3.18",
     "@types/react-dom": "^18.3.5",
     "@vitejs/plugin-react-swc": "^3.9.0",

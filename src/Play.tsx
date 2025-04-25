@@ -10,14 +10,17 @@ import { WithShimmerEffect } from "./WithSimmerEffect";
 import classes from "./play.module.css";
 import { Settings } from "./settings";
 import { SNIPPETS } from "./snippets";
+import { ROOT } from "./titles";
 import { useAudio } from "./use-audio-on";
 import { useChallenge } from "./use-challenge";
 import { useDoneChallenges } from "./use-done-challenges";
 import { useEnableTimer } from "./use-enable-timer";
 import { useHasNoHover } from "./use-has-no-hover";
 
-const coinAudio = new Audio("/coin.mp3");
-const clickAudio = new Audio("/click.mp3");
+const IS_SERVER = typeof window === "undefined";
+
+const coinAudio = !IS_SERVER ? new Audio("/coin.mp3") : null;
+const clickAudio = !IS_SERVER ? new Audio("/click.mp3") : null;
 // const applauseAudio = new Audio("/applause.mp3"); // TODO USE WHEN FINISHED SNIPPETS
 
 const INITIAL_HINT_RADIUS = 200;
@@ -139,7 +142,7 @@ export function Play() {
       pauseTimer();
       confetti.current.addConfetti();
       if (audioOn) {
-        coinAudio.play();
+        coinAudio?.play();
         // applauseAudio.current.play();
       }
 
@@ -154,7 +157,7 @@ export function Play() {
       });
     } else {
       if (audioOn) {
-        clickAudio.play();
+        clickAudio?.play();
       }
     }
     setHintRadius(0);
@@ -177,7 +180,7 @@ export function Play() {
     restartTimer(time);
   }
 
-  const name = "Spot the Difference";
+  const name = ROOT;
   let documentTitle = `Playing | ${name}`;
   if (gotIt) {
     documentTitle = `Congratulations! | ${name}`;
