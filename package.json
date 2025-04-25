@@ -11,7 +11,9 @@
     "preview": "bunx --bun vite preview",
     "prepare": "husky",
     "ssg": "bun run src/scripts/generate-static-pages.ts",
-    "test": "playwright test",
+    "test": "bun run test:ssg && bun run test:playwright",
+    "test:ssg": "bun test ./tests/ssg.test.ts",
+    "test:playwright": "playwright test",
     "playwright:codegen": "playwright codegen"
   },
   "dependencies": {
