@@ -1,23 +1,17 @@
 import { expect, test } from "bun:test";
 
-test("about.html should have html and title", async () => {
-  const html = await Bun.file("dist/about.html").text();
-  expect(html).not.toContain('<div id="root"></div>');
-  const match = html.match(/<title>(.*)<\/title>/);
-  expect(match).not.toBeNull();
-  if (match) {
-    const title = match[1];
-    expect(title).toContain("About");
-  }
-});
+const cases = [
+  ["dist/index.html", "Spot the Difference"],
+  ["dist/about.html", "About"],
+  ["dist/stats.html", "Stats"],
+];
 
-test("stats.html should have html and title", async () => {
-  const html = await Bun.file("dist/stats.html").text();
+test.each(cases)("%s should have html and title", async (file, title) => {
+  const html = await Bun.file(file).text();
   expect(html).not.toContain('<div id="root"></div>');
   const match = html.match(/<title>(.*)<\/title>/);
   expect(match).not.toBeNull();
   if (match) {
-    const title = match[1];
-    expect(title).toContain("Stats");
+    expect(match[1]).toContain(title);
   }
 });

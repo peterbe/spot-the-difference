@@ -12,6 +12,9 @@ export default function AppRoutes() {
         <Route path="/" element={<App />} />
         <Route path="/play" element={<Play />} />
         <Route path="/about" element={<About />} />
+        {/* Temporary! This is just so I can compare the web-perf
+        between this page and the SSG one */}
+        <Route path="/about-csr" element={<About />} />
         <Route path="/stats" element={<Stats />} />
       </Route>
     </Routes>
