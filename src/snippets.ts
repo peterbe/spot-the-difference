@@ -715,6 +715,15 @@ SNIPPETS.set("appRouts", {
 </Route>
     `.trim(),
 });
+// --------------------------------------------------------------------------
+
+SNIPPETS.set("offsetsJs", {
+  category: CATEGORIES.JAVA_SCRIPT,
+  text: `
+const Left = Math.random() > 0.5 ? jitter : -jitter;
+const Top = Math.random() > 0.5 ? jitter : -jitter;
+    `.trim(),
+});
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

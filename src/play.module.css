@@ -18,11 +18,13 @@
   }
 }
 
-.snippets span {
-  cursor: pointer;
-}
-.snippets span:hover {
-  font-weight: bold;
+@media (pointer: fine) {
+  .snippets span {
+    cursor: pointer;
+  }
+  .snippets span:hover {
+    font-weight: bold;
+  }
 }
 
 .snippetsStopped span {
