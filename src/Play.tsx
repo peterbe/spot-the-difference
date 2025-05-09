@@ -38,7 +38,6 @@ export function Play() {
 
   const [timer] = useEnableTimer();
 
-  // XXX Is this still needed??
   const stoppedChallengeIds = useRef(new Set<string>());
 
   const expiryTimestamp = new Date();
@@ -125,7 +124,6 @@ export function Play() {
       return;
     }
     setGuess(nth);
-    setGuessCount((prev) => prev + 1);
 
     const hit = isHit(
       nth,
@@ -156,6 +154,8 @@ export function Play() {
         timer,
       });
     } else {
+      setGuessCount((prev) => prev + 1);
+
       if (audioOn) {
         clickAudio?.play();
       }
