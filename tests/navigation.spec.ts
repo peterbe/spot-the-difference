@@ -3,6 +3,11 @@ import { expect, test } from "@playwright/test";
 test("home page", async ({ page }) => {
   await page.goto("/");
   await expect(page).toHaveTitle("Spot the Difference");
+
+  await expect(page.locator('meta[name="description"]')).toHaveAttribute(
+    "content",
+    "A silly game of spotting difference in snippets",
+  );
 });
 
 test("play", async ({ page }) => {
