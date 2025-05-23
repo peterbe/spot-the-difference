@@ -1,4 +1,5 @@
 import { styleText } from "node:util";
+import * as cheerio from "cheerio";
 import { ABOUT, ROOT, STATS } from "../titles";
 import { preRenderApp } from "./pre-render";
 
@@ -18,10 +19,11 @@ async function main() {
 
   const templateHtml = await Bun.file("dist/_index.html").text();
   if (!templateHtml) throw new Error("templateFile is empty");
+  const $ = cheerio.load(templateHtml);
 
   for (const [path, dest, title] of PAGES) {
-    const pageHtml = await preRenderApp(templateHtml, path, title);
-    await Bun.file(dest).write(pageHtml);
+    await preRenderApp($, path, title);
+    await Bun.file(dest).write($.html());
     console.log(
       styleText("green", `Generated ${dest} for ${path} with title: ${title}`),
     );

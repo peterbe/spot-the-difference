@@ -1,3 +1,4 @@
+import type { CheerioAPI } from "cheerio";
 import { renderToString } from "react-dom/server";
 import { StaticRouter } from "react-router";
 import { createServer } from "vite";
@@ -13,7 +14,7 @@ const getAppRoutes = async () => {
 };
 
 export const preRenderApp = async (
-  html: string,
+  $: CheerioAPI,
   path: string,
   title: string,
 ) => {
@@ -25,7 +26,6 @@ export const preRenderApp = async (
     </StaticRouter>,
   );
 
-  return html
-    .replace("<!--ssg-outlet-->", reactHtml)
-    .replace(/<title>.*<\/title>/, `<title>${title}</title>`);
+  $("#root").html(reactHtml);
+  $("title").text(title);
 };
