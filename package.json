@@ -27,7 +27,7 @@
     "husky": "^9.1.7",
     "js-confetti": "^0.12.0",
     "react": "^18.3.1",
-    "react-dom": "^18.3.1",
+    "react-dom": "^19.1.0",
     "react-router": "^7.6.2",
     "react-timer-hook": "^4.0.5",
     "usehooks-ts": "^3.1.1"
@@ -36,7 +36,7 @@
     "@biomejs/biome": "1.9.4",
     "@types/bun": "^1.2.15",
     "@types/react": "^18.3.18",
-    "@types/react-dom": "^18.3.5",
+    "@types/react-dom": "^19.1.6",
     "@vitejs/plugin-react-swc": "^3.10.1",
     "globals": "^15.15.0",
     "typescript": "~5.8.3",
