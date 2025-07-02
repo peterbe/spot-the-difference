@@ -1,24 +1,24 @@
 import {
-  type Timestamp,
   collection,
   getCountFromServer,
   limit,
   onSnapshot,
   orderBy,
   query,
+  type Timestamp,
   where,
 } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { useDocumentTitle } from "usehooks-ts";
-import { Promo } from "./Promo";
-import { WithShimmerEffect } from "./WithSimmerEffect";
 import type { DoneChallenge } from "./db";
 import { useFirebase } from "./firebase-context";
+import { Promo } from "./Promo";
 import playClasses from "./play.module.css";
 import { SNIPPETS } from "./snippets";
 import classes from "./stats.module.css";
 import { STATS } from "./titles";
 import { useFirebaseAutoSignIn } from "./use-firebase-signin";
+import { WithShimmerEffect } from "./WithSimmerEffect";
 
 type UnsubscribeType = ReturnType<typeof onSnapshot>;
 
@@ -63,7 +63,6 @@ export function Stats() {
       unsubscribes.push(
         onSnapshot(q, (querySnapshot) => {
           const byChallengeId: ByChallengeId = {};
-          // biome-ignore lint/complexity/noForEach: it's firestore's api
           querySnapshot.forEach((doc) => {
             const challenge = doc.data() as DoneChallengeFirestore;
             if (!(challenge.challengeId in byChallengeId)) {

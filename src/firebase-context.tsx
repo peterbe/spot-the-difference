@@ -1,13 +1,13 @@
 import {
   type Auth,
-  type User,
   getAuth,
   onAuthStateChanged,
+  type User,
 } from "firebase/auth";
 import { type Firestore, getFirestore } from "firebase/firestore";
 import {
-  type ReactNode,
   createContext,
+  type ReactNode,
   useContext,
   useEffect,
   useState,

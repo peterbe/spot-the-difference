@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { type SnippetChallenge, getSnippetChallenge } from "./challenge";
+import { getSnippetChallenge, type SnippetChallenge } from "./challenge";
 import { SNIPPETS, type Snippet } from "./snippets";
 
 export type Challenge = {
