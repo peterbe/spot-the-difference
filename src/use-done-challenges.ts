@@ -60,6 +60,7 @@ export function useDoneChallenges() {
     // db.done.add() will mutate the `challenge` and inject an `id` property
     await db.done.add(challenge);
     if (user && firestore) {
+      // biome-ignore lint/correctness/noUnusedVariables: simple way to destructure
       const { id, ...pure } = challenge as DoneChallenge;
       await addDoc(collection(firestore, "plays"), {
         ...pure,

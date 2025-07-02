@@ -5,9 +5,8 @@ import { useDocumentTitle } from "usehooks-ts";
 import { AboutDoneChallenges } from "./AboutDoneChallenges";
 import { DoneThemAll } from "./DoneThemAll";
 import { ProgressTimer } from "./ProgressTimer";
-import { RandomHappyEmoji, RandomSadEmoji } from "./RandomEmoji";
-import { WithShimmerEffect } from "./WithSimmerEffect";
 import classes from "./play.module.css";
+import { RandomHappyEmoji, RandomSadEmoji } from "./RandomEmoji";
 import { Settings } from "./settings";
 import { SNIPPETS } from "./snippets";
 import { ROOT } from "./titles";
@@ -16,6 +15,7 @@ import { useChallenge } from "./use-challenge";
 import { useDoneChallenges } from "./use-done-challenges";
 import { useEnableTimer } from "./use-enable-timer";
 import { useHasNoHover } from "./use-has-no-hover";
+import { WithShimmerEffect } from "./WithSimmerEffect";
 
 const IS_SERVER = typeof window === "undefined";
 
@@ -235,6 +235,7 @@ export function Play() {
               >
                 {challenge.snippetArr.map((character, i) => {
                   return (
+                    // biome-ignore lint/a11y/noStaticElementInteractions: special
                     <span
                       key={`${character}${i}`}
                       onClick={(event) => clicked(event, i)}
@@ -262,6 +263,7 @@ export function Play() {
                 {challenge.differenceArr.map((character, i) => {
                   const bother = !(character === "\n" || character === " ");
                   return (
+                    // biome-ignore lint/a11y/noStaticElementInteractions: special
                     <span
                       key={`${character}${i}`}
                       ref={

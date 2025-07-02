@@ -1,6 +1,5 @@
-import classes from "./head.module.css";
-
 import { NavLink, useLocation } from "react-router";
+import classes from "./head.module.css";
 
 export function Head() {
   const { pathname } = useLocation();
