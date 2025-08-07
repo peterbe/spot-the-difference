@@ -282,7 +282,7 @@ SNIPPETS.set("getResultsPy", {
 def get_results(queryset, fields, size):
     count = queryset.count()
     results = []
-    for record in queryset.values(*fields)[:size]
+    for record in queryset.values(*fields)[:size]:
         results.append(record)
     return {"count": count, "results": results}
      `.trim(),
