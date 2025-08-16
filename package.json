@@ -14,7 +14,8 @@
     "test": "bun run test:ssg && bun run test:playwright",
     "test:ssg": "bun test ./tests/ssg.test.ts",
     "test:playwright": "playwright test",
-    "playwright:codegen": "playwright codegen"
+    "playwright:codegen": "playwright codegen",
+    "postinstall": "bunx biome migrate --write"
   },
   "dependencies": {
     "@picocss/pico": "^2.1.1",
@@ -33,13 +34,13 @@
     "usehooks-ts": "^3.1.1"
   },
   "devDependencies": {
-    "@biomejs/biome": "2.1.4",
-    "@types/bun": "^1.2.19",
-    "@types/react": "^19.1.9",
+    "@biomejs/biome": "2.2.0",
+    "@types/bun": "^1.2.20",
+    "@types/react": "^19.1.10",
     "@types/react-dom": "^19.1.7",
     "@vitejs/plugin-react-swc": "^4.0.0",
     "globals": "^15.15.0",
-    "typescript": "~5.8.3",
+    "typescript": "~5.9.2",
     "vite": "^6.3.5"
   }
 }

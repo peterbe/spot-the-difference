@@ -4,6 +4,7 @@ import { useTimer } from "react-timer-hook";
 import { useDocumentTitle } from "usehooks-ts";
 import { AboutDoneChallenges } from "./AboutDoneChallenges";
 import { DoneThemAll } from "./DoneThemAll";
+import type { DoneChallenge } from "./db";
 import { ProgressTimer } from "./ProgressTimer";
 import classes from "./play.module.css";
 import { RandomHappyEmoji, RandomSadEmoji } from "./RandomEmoji";
@@ -220,162 +221,193 @@ export function Play() {
   const blurText = (paused || hardPaused) && timer;
 
   return (
-    <article>
-      {doneThemAll && <DoneThemAll />}
-      {!doneThemAll && (
-        <div className="grid">
-          <div>
-            <h4>Original</h4>
-            <div className={blurText ? classes.paused : undefined}>
-              <pre
-                data-testid="original-snippet"
-                className={`${classes.snippets} ${
-                  stopped ? classes.snippetsStopped : ""
-                }`}
-              >
-                {challenge.snippetArr.map((character, i) => {
-                  return (
-                    // biome-ignore lint/a11y/noStaticElementInteractions: special
-                    <span
-                      key={`${character}${i}`}
-                      onClick={(event) => clicked(event, i)}
-                    >
-                      {character}
-                    </span>
-                  );
-                })}
-              </pre>
+    <>
+      <article>
+        {doneThemAll && <DoneThemAll />}
+        {!doneThemAll && (
+          <div className="grid">
+            <div>
+              <h4>Original</h4>
+              <div className={blurText ? classes.paused : undefined}>
+                <pre
+                  data-testid="original-snippet"
+                  className={`${classes.snippets} ${
+                    stopped ? classes.snippetsStopped : ""
+                  }`}
+                >
+                  {challenge.snippetArr.map((character, i) => {
+                    return (
+                      // biome-ignore lint/a11y/noStaticElementInteractions: special
+                      <span
+                        key={`${character}${i}`}
+                        onClick={(event) => clicked(event, i)}
+                      >
+                        {character}
+                      </span>
+                    );
+                  })}
+                </pre>
+              </div>
+              <p>
+                Type: <b>{challenge.snippet.category}</b>
+              </p>
             </div>
-            <p>
-              Type: <b>{challenge.snippet.category}</b>
-            </p>
-          </div>
 
-          <div>
-            <h4>Messed with</h4>
-            <div className={blurText ? classes.paused : undefined}>
-              <pre
-                data-testid="messed-with-snippet"
-                className={`${classes.snippets} ${
-                  stopped ? classes.snippetsStopped : ""
-                }`}
-              >
-                {challenge.differenceArr.map((character, i) => {
-                  const bother = !(character === "\n" || character === " ");
-                  return (
-                    // biome-ignore lint/a11y/noStaticElementInteractions: special
-                    <span
-                      key={`${character}${i}`}
-                      ref={
-                        i === challenge.challenge.characterAt
-                          ? correctRef
-                          : undefined
-                      }
-                      onClick={(event) => bother && clicked(event, i)}
-                    >
-                      {character}
-                    </span>
-                  );
-                })}
-              </pre>
+            <div>
+              <h4>Messed with</h4>
+              <div className={blurText ? classes.paused : undefined}>
+                <pre
+                  data-testid="messed-with-snippet"
+                  className={`${classes.snippets} ${
+                    stopped ? classes.snippetsStopped : ""
+                  }`}
+                >
+                  {challenge.differenceArr.map((character, i) => {
+                    const bother = !(character === "\n" || character === " ");
+                    return (
+                      // biome-ignore lint/a11y/noStaticElementInteractions: special
+                      <span
+                        key={`${character}${i}`}
+                        ref={
+                          i === challenge.challenge.characterAt
+                            ? correctRef
+                            : undefined
+                        }
+                        onClick={(event) => bother && clicked(event, i)}
+                      >
+                        {character}
+                      </span>
+                    );
+                  })}
+                </pre>
+              </div>
+              <p>click the character that is different ⤴</p>
             </div>
-            <p>click the character that is different ⤴</p>
           </div>
+        )}
+        {hintRadius > 0 && (
+          <div
+            className={classes.hintOverlay}
+            ref={hintOverlayRef}
+            style={{ opacity: hintRadius / 100 }}
+          />
+        )}
+        <div className="grid">
+          {guessCount > 0 ? (
+            <p style={{ textAlign: "right" }}>
+              Guesses: <b>{guessCount}</b>
+            </p>
+          ) : (
+            <p> &nbsp; </p>
+          )}
+
+          {/* {countHints > 0 && <p>Hint engaged!</p>} */}
+          {countHints === 1 && <p>You're only human!</p>}
+          {countHints > 1 && <p>Used a hint</p>}
         </div>
-      )}
-      {hintRadius > 0 && (
-        <div
-          className={classes.hintOverlay}
-          ref={hintOverlayRef}
-          style={{ opacity: hintRadius / 100 }}
-        />
-      )}
-      <div className="grid">
-        {guessCount > 0 ? (
-          <p style={{ textAlign: "right" }}>
-            Guesses: <b>{guessCount}</b>
-          </p>
-        ) : (
-          <p> &nbsp; </p>
+        {(gotIt !== null || stopped) && (
+          <hgroup style={{ textAlign: "center" }}>
+            <h2>
+              {gotIt ? "You did it!" : stopped ? "Time ran out" : "Wrong"}{" "}
+              {gotIt ? <RandomHappyEmoji /> : <RandomSadEmoji />}
+            </h2>
+            <WithShimmerEffect>
+              <p>Click "Next!"</p>
+            </WithShimmerEffect>
+          </hgroup>
         )}
 
-        {/* {countHints > 0 && <p>Hint engaged!</p>} */}
-        {countHints === 1 && <p>You're only human!</p>}
-        {countHints > 1 && <p>Used a hint</p>}
-      </div>
-      {(gotIt !== null || stopped) && (
-        <hgroup style={{ textAlign: "center" }}>
-          <h2>
-            {gotIt ? "You did it!" : stopped ? "Time ran out" : "Wrong"}{" "}
-            {gotIt ? <RandomHappyEmoji /> : <RandomSadEmoji />}
-          </h2>
-          <WithShimmerEffect>
-            <p>Click "Next!"</p>
-          </WithShimmerEffect>
-        </hgroup>
-      )}
+        {timer && !doneThemAll && (
+          <ProgressTimer
+            seconds={seconds === 0 ? seconds : maxSeconds - seconds}
+            maxSeconds={maxSeconds}
+          />
+        )}
 
-      {timer && !doneThemAll && (
-        <ProgressTimer
-          seconds={seconds === 0 ? seconds : maxSeconds - seconds}
-          maxSeconds={maxSeconds}
-        />
-      )}
+        {!doneThemAll && (
+          <div role="group">
+            {timer && (
+              <button
+                disabled={!!stopped}
+                type="button"
+                onClick={() => {
+                  setHardPaused((was) => !was);
+                  if (isRunning) {
+                    pauseTimer();
+                  } else {
+                    resumeTimer();
+                  }
+                }}
+              >
+                {hardPaused ? "Unpause" : "Pause"}
+              </button>
+            )}
 
-      {!doneThemAll && (
-        <div role="group">
-          {timer && (
             <button
-              disabled={!!stopped}
+              disabled={timer && (!!stopped || paused || hardPaused)}
               type="button"
               onClick={() => {
-                setHardPaused((was) => !was);
-                if (isRunning) {
-                  pauseTimer();
-                } else {
-                  resumeTimer();
+                if (correctRef.current) {
+                  if (hintRadius === 0) {
+                    setHintRadius(INITIAL_HINT_RADIUS);
+                  } else {
+                    setHintRadius(0);
+                    // setHintRadius((prev) => Math.max(10, prev - 10));
+                  }
+                  setCountHints((prev) => prev + 1);
                 }
               }}
             >
-              {hardPaused ? "Unpause" : "Pause"}
+              Hint
             </button>
-          )}
 
-          <button
-            disabled={timer && (!!stopped || paused || hardPaused)}
-            type="button"
-            onClick={() => {
-              if (correctRef.current) {
-                if (hintRadius === 0) {
-                  setHintRadius(INITIAL_HINT_RADIUS);
-                } else {
-                  setHintRadius(0);
-                  // setHintRadius((prev) => Math.max(10, prev - 10));
-                }
-                setCountHints((prev) => prev + 1);
-              }
-            }}
-          >
-            Hint
-          </button>
+            <button
+              type="button"
+              disabled={!!paused}
+              onClick={() => {
+                reset();
+              }}
+            >
+              Next!
+            </button>
+          </div>
+        )}
 
-          <button
-            type="button"
-            disabled={!!paused}
-            onClick={() => {
-              reset();
-            }}
-          >
-            Next!
-          </button>
-        </div>
-      )}
+        {doneChallenges && doneChallenges.length > 0 && (
+          <AboutDoneChallenges challenges={doneChallenges} />
+        )}
 
-      {doneChallenges && doneChallenges.length > 0 && (
-        <AboutDoneChallenges challenges={doneChallenges} />
-      )}
+        <Settings />
+      </article>
 
-      <Settings />
+      <MadeBy doneChallenges={doneChallenges} />
+    </>
+  );
+}
+
+function MadeBy({ doneChallenges }: { doneChallenges?: DoneChallenge[] }) {
+  if (!doneChallenges || !doneChallenges.length) return null;
+  const imageUrlBase = "https://www.peterbe.com/api/v1/logo.png";
+  const sp = new URLSearchParams({
+    ref: "spot-the-difference",
+    doneChallenges: String(doneChallenges.length),
+  });
+  const imageUrl = `${imageUrlBase}?${sp.toString()}`;
+  return (
+    <article
+      style={{
+        display: "inline-block",
+        textAlign: "center",
+        fontSize: "70%",
+      }}
+    >
+      <a href="https://www.peterbe.com?ref=spot-the-difference">
+        <img src={imageUrl} width="70" alt="Made by peterbe" />
+      </a>
+      <p style={{ marginBottom: 5, marginTop: 5 }}>
+        Made by{" "}
+        <a href="https://www.peterbe.com?ref=spot-the-difference">peterbe</a>
+      </p>
     </article>
   );
 }
