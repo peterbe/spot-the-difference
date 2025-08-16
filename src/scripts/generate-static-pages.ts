@@ -20,13 +20,16 @@ async function main() {
   const templateHtml = await Bun.file("dist/_index.html").text();
   if (!templateHtml) throw new Error("templateFile is empty");
   const $ = cheerio.load(templateHtml);
-  const links = $('link[rel="stylesheet"]').map((_, el) => {
-    const $el = $(el);
-    const href = $el.attr("href");
-    if (href?.endsWith(".css") && href.startsWith("/")) {
-      return { $el, href };
-    }
-  });
+  const links = $('link[rel="stylesheet"]')
+    .map((_, el) => {
+      const $el = $(el);
+      const href = $el.attr("href");
+      if (href?.endsWith(".css") && href.startsWith("/")) {
+        return { $el, href };
+      }
+      return null;
+    })
+    .filter((obj) => Boolean(obj));
   for (const { $el, href } of links) {
     const cssFile = Bun.file(`dist${href}`);
     if (await cssFile.exists()) {
