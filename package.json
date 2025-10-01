@@ -19,11 +19,11 @@
   },
   "dependencies": {
     "@picocss/pico": "^2.1.1",
-    "@playwright/test": "^1.54.2",
+    "@playwright/test": "^1.55.1",
     "cheerio": "^1.1.2",
     "clsx": "^2.1.1",
-    "dexie": "^4.0.11",
-    "dexie-react-hooks": "^1.1.7",
+    "dexie": "^4.2.0",
+    "dexie-react-hooks": "^4.2.0",
     "firebase": "^11.10.0",
     "husky": "^9.1.7",
     "js-confetti": "^0.12.0",
@@ -34,13 +34,13 @@
     "usehooks-ts": "^3.1.1"
   },
   "devDependencies": {
-    "@biomejs/biome": "2.2.0",
-    "@types/bun": "^1.2.20",
+    "@biomejs/biome": "2.2.4",
+    "@types/bun": "^1.2.23",
     "@types/react": "^19.1.10",
     "@types/react-dom": "^19.1.7",
     "@vitejs/plugin-react-swc": "^4.0.0",
     "globals": "^15.15.0",
-    "typescript": "~5.9.2",
+    "typescript": "~5.9.3",
     "vite": "^6.3.5"
   }
 }
