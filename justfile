@@ -27,7 +27,6 @@ install:
 
 outdated:
     bun outdated
-    bunx npm-check-updates --interactive
 
 codegen:
     curl -s http://localhost:3000
@@ -40,5 +39,6 @@ e2e:
     VITE_TEST=1 bun run build
     bun run test
 
-# alias
-upgrade: outdated
+upgrade:
+    bun update --interactive
+    bunx biome migrate --write
