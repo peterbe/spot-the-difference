@@ -24,7 +24,7 @@
     "clsx": "^2.1.1",
     "dexie": "^4.2.1",
     "dexie-react-hooks": "^4.2.0",
-    "firebase": "^11.10.0",
+    "firebase": "^12.4.0",
     "husky": "^9.1.7",
     "js-confetti": "^0.13.1",
     "react": "^19.2.0",
