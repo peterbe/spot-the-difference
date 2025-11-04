@@ -10,6 +10,8 @@ const vite = await createServer({
 
 const getAppRoutes = async () => {
   const { default: AppRoutes } = await vite.ssrLoadModule("/src/AppRoutes");
+  console.log("APPROUTES IS", AppRoutes);
+  console.log("APPROUTES CONTENT", AppRoutes.toString());
   return AppRoutes;
 };
 
