@@ -13,8 +13,8 @@ export const preRenderApp = async (
   path: string,
   title: string,
 ) => {
-  const reactHtml = ssg(path);
+  const html = ssg(path);
 
-  $("#root").html(reactHtml);
+  $("#root").html(html);
   $("title").text(title);
 };
