@@ -1,6 +1,4 @@
 import type { CheerioAPI } from "cheerio";
-import { renderToString } from "react-dom/server";
-import { StaticRouter } from "react-router";
 import { createServer } from "vite";
 
 const vite = await createServer({
@@ -8,25 +6,14 @@ const vite = await createServer({
   appType: "custom",
 });
 
-const getAppRoutes = async () => {
-  const { default: AppRoutes } = await vite.ssrLoadModule("/src/AppRoutes");
-  console.log("APPROUTES IS", AppRoutes);
-  console.log("APPROUTES CONTENT", AppRoutes.toString());
-  return AppRoutes;
-};
+const { default: ssg } = await vite.ssrLoadModule("./src/ssg");
 
 export const preRenderApp = async (
   $: CheerioAPI,
   path: string,
   title: string,
 ) => {
-  const AppRoutes = await getAppRoutes();
-
-  const reactHtml = renderToString(
-    <StaticRouter location={path}>
-      <AppRoutes />
-    </StaticRouter>,
-  );
+  const reactHtml = ssg(path);
 
   $("#root").html(reactHtml);
   $("title").text(title);
