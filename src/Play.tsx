@@ -386,7 +386,7 @@ export function Play() {
 }
 
 function MadeBy({ doneChallenges }: { doneChallenges?: DoneChallenge[] }) {
-  if (!doneChallenges || !doneChallenges.length) return null;
+  if (!doneChallenges?.length) return null;
   const imageUrlBase = "https://www.peterbe.com/api/v1/logo.png";
   const sp = new URLSearchParams({
     ref: "spot-the-difference",
